@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/profileMainFragment"
+        android:title="@string/profile"/>
+
+    <item
+        android:id="@+id/habitsMainFragment"
+        android:title="@string/habits"/>
+
+    <item
+        android:id="@+id/scheduleMainFragment"
+        android:title="@string/schedule"/>
+
+    <item
+        android:id="@+id/tasksMainFragment"
+        android:title="@string/tasks"/>
+
+    <item
+        android:id="@+id/note_menu_navigation"
+        android:title="@string/notes"/>
+
+</menu>

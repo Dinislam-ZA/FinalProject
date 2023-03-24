@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_fragment_navigation"
+    app:startDestination="@id/profileMainFragment">
+
+    <fragment
+        android:id="@+id/profileMainFragment"
+        android:name="com.example.finalproject.ui.profile.profilemainscreen.ProfileMainFragment"
+        android:label="fragment_profile_main"
+        tools:layout="@layout/fragment_profile_main" />
+    <fragment
+        android:id="@+id/habitsMainFragment"
+        android:name="com.example.finalproject.ui.habits.habitsmainscreen.HabitsMainFragment"
+        android:label="fragment_habits_main"
+        tools:layout="@layout/fragment_habits_main" />
+    <fragment
+        android:id="@+id/scheduleMainFragment"
+        android:name="com.example.finalproject.ui.schedule.schedulemainscreen.ScheduleMainFragment"
+        android:label="fragment_schedule_main"
+        tools:layout="@layout/fragment_schedule_main" />
+    <fragment
+        android:id="@+id/tasksMainFragment"
+        android:name="com.example.finalproject.ui.tasks.tasksmainscreen.TasksMainFragment"
+        android:label="fragment_tasks_main"
+        tools:layout="@layout/fragment_tasks_main" />
+    <navigation android:id="@+id/note_menu_navigation"
+        app:startDestination="@id/notesMainFragment">
+        <fragment
+            android:id="@+id/notesMainFragment"
+            android:name="com.example.finalproject.ui.notes.notesmainscreen.NotesMainFragment"
+            android:label="fragment_notes_main"
+            tools:layout="@layout/fragment_notes_main">
+            <action
+                android:id="@+id/action_notesMainFragment_to_noteCreateFragment"
+                app:destination="@id/noteCreateFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/noteCreateFragment"
+            android:name="com.example.finalproject.ui.notes.notecreatescreen.NoteCreateFragment"
+            android:label="fragment_note_create"
+            tools:layout="@layout/fragment_note_create" />
+    </navigation>
+</navigation>
