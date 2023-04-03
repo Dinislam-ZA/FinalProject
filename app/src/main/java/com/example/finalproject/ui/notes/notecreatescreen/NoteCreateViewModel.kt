@@ -1,16 +1,38 @@
 package com.example.finalproject.ui.notes.notecreatescreen
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.finalproject.data.model.Note
 import com.example.finalproject.data.repositories.NoteRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
 
 
 
+    fun createNote(title:String, noteDes:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            if (title.isNotBlank()&& title.isNotEmpty()){
+                val date = LocalDateTime.now().toLocalDate().toString()
+                val note = Note(null ,title, noteDes, date)
+                noteRepo.insertNote(note)
+            }
+        }
+    }
 
+    fun findNoteByTitle(title:String):Note?{
+        var note:Note? = null
+        viewModelScope.launch(Dispatchers.IO) {
+            note = noteRepo.findNoteByTitle(title)
+        }
+        return note
+    }
 
     companion object {
 

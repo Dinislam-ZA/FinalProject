@@ -1,9 +1,6 @@
 package com.example.finalproject.data.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.finalproject.data.model.Note
 import kotlinx.coroutines.flow.Flow
 
@@ -16,7 +13,7 @@ interface NoteDao {
     fun loadAllByIds(NoteIds: IntArray): List<Note>
 
     @Query("SELECT * FROM notes_table WHERE title LIKE :title LIMIT 1")
-    fun findByName(title: String): Note
+    suspend fun findByName(title: String): Note
 
     @Query("SELECT * FROM notes_table WHERE id LIKE :id LIMIT 1")
     fun findById(id:Long): Flow<Note>
@@ -25,7 +22,10 @@ interface NoteDao {
     fun insertAll(vararg Notes: Note)
 
     @Insert
-    fun insert(note:Note)
+    suspend fun insert(note:Note)
+
+//    @Update
+//    suspend fun update(title: String, note: Note)
 
     @Delete
     fun delete(Note: Note)
