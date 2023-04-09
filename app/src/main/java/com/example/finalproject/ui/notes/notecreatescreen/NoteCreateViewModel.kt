@@ -9,12 +9,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
 
-
+    var noteLive: MutableLiveData<Note?> = MutableLiveData(null)
 
     fun createNote(title:String, noteDes:String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -26,12 +27,12 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
         }
     }
 
-    fun findNoteByTitle(title:String):Note?{
+    fun findNoteByTitle(title:String){
         var note:Note? = null
         viewModelScope.launch(Dispatchers.IO) {
             note = noteRepo.findNoteByTitle(title)
+            noteLive.postValue(note)
         }
-        return note
     }
 
     companion object {

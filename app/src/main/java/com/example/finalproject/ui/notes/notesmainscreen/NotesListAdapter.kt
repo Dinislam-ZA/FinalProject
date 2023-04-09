@@ -1,5 +1,6 @@
 package com.example.finalproject.ui.notes.notesmainscreen
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -10,10 +11,14 @@ import com.example.finalproject.data.model.Note
 import com.example.finalproject.databinding.NotesListItemBinding
 import com.example.finalproject.ui.MyClickListener
 
-class NotesListAdapter(var notesList: List<Note>, private val listener: MyClickListener): RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
+class NotesListAdapter(var notesList: List<Note>, private val listener: MyClickListener, val context:Context): RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
     inner class NoteViewHolder(val binding: NotesListItemBinding, private val listener: MyClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
-        override fun onClick(p0: View?) {
+
+        init {
+            binding.root.setOnClickListener(this)
+        }
+        override fun onClick(view: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 listener.onClick(position)
@@ -23,7 +28,7 @@ class NotesListAdapter(var notesList: List<Note>, private val listener: MyClickL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val binding = NotesListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = NotesListItemBinding.inflate(LayoutInflater.from(context), parent, false)
 
         return NoteViewHolder(binding, listener)
     }

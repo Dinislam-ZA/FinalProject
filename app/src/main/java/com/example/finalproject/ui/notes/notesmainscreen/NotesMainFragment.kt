@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.finalproject.R
 import com.example.finalproject.data.model.Note
 import com.example.finalproject.databinding.FragmentNotesMainBinding
@@ -36,8 +37,8 @@ class NotesMainFragment : Fragment(), MyClickListener {
     ): View? {
         binding = FragmentNotesMainBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapter = NotesListAdapter(notesList, this)
-        binding.RCView.layoutManager = GridLayoutManager(context,2)
+        adapter = context?.let { NotesListAdapter(notesList, this, it) }!!
+        binding.RCView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.RCView.adapter = adapter
         binding.addNoteButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_notesMainFragment_to_noteCreateFragment)
@@ -53,11 +54,12 @@ class NotesMainFragment : Fragment(), MyClickListener {
 
     fun notesChanges(notes: List<Note>){
         notesList = notes
+        adapter.notesList = notes
         adapter.notifyDataSetChanged()
     }
 
     override fun onClick(position:Int){
-        val bundle = bundleOf("arg1" to notesList[position].id, "arg2" to notesList[position].title)
+        val bundle = bundleOf("id" to notesList[position].id, "title" to notesList[position].title)
         binding.root.findNavController().navigate(R.id.action_notesMainFragment_to_noteCreateFragment, bundle)
     }
 

@@ -1,6 +1,7 @@
 package com.example.finalproject.ui.notes.notecreatescreen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,11 +39,23 @@ class NoteCreateFragment : Fragment() {
             view.findNavController().popBackStack()
         }
 
-        val title = arguments?.getString("arg2")
+        val title = arguments?.getString("title")
+
         if (title != null) {
-            var note = viewModel.findNoteByTitle(title)
-            binding.titleTV.setText(note?.title)
-            binding.noteTV.setText(note?.note)
+            Log.d("title", title)
+            isForCreate = false
+            viewModel.findNoteByTitle(title)
+            viewModel.noteLive.observe(viewLifecycleOwner){
+                if (it != null) {
+                    binding.titleTV.setText(it.title)
+                    binding.noteTV.setText(it.note)
+                }
+            }
+
+        }
+        else
+        {
+            Log.d("title", "no title(")
         }
         return binding.root
     }

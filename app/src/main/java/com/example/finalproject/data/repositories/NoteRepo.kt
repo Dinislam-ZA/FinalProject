@@ -10,6 +10,7 @@ class NoteRepo(val context:Context) {
     private val db = AppDatabase.getDatabase(context)
     private val dao = db.noteDao()
 
+
     suspend fun insertNote(note: Note) = dao.insert(note)
 
     fun getAllNotes():Flow<List<Note>> = dao.getAll()

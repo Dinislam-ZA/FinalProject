@@ -18,10 +18,10 @@ interface NoteDao {
     @Query("SELECT * FROM notes_table WHERE id LIKE :id LIMIT 1")
     fun findById(id:Long): Flow<Note>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg Notes: Note)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note:Note)
 
 //    @Update
