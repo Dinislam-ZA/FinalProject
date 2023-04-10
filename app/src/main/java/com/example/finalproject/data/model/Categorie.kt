@@ -12,5 +12,5 @@ data class Categorie(
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "color")
-    var color:String
+    var color:Int
 )

@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import com.example.finalproject.R
+import com.example.finalproject.databinding.FragmentProfileMainBinding
 
 class ProfileMainFragment : Fragment() {
 
@@ -14,19 +17,21 @@ class ProfileMainFragment : Fragment() {
         fun newInstance() = ProfileMainFragment()
     }
 
-    private lateinit var viewModel: ProfileMainViewModel
+    private val viewModel:ProfileMainViewModel by viewModels { ProfileMainViewModel.Factory }
+    private lateinit var binding: FragmentProfileMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile_main, container, false)
+        binding = FragmentProfileMainBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.categoriesButton.setOnClickListener {
+            view.findNavController().navigate(R.id.action_profileMainFragment_to_categoriesFragment)
+        }
+        return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileMainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

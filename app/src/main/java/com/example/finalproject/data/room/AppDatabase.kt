@@ -8,7 +8,7 @@ import com.example.finalproject.data.model.Categorie
 import com.example.finalproject.data.model.Note
 
 
-@Database(entities = [Note::class, Categorie::class], version = 3)
+@Database(entities = [Note::class, Categorie::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 

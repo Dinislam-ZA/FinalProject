@@ -3,7 +3,7 @@
 
 
     <item
-        android:id="@+id/profileMainFragment"
+        android:id="@+id/profile_navigation"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"/>
 

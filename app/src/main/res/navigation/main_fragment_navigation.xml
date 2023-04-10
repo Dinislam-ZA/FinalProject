@@ -3,13 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_fragment_navigation"
-    app:startDestination="@id/profileMainFragment">
+    app:startDestination="@id/profile_navigation">
 
-    <fragment
-        android:id="@+id/profileMainFragment"
-        android:name="com.example.finalproject.ui.profile.profilemainscreen.ProfileMainFragment"
-        android:label="fragment_profile_main"
-        tools:layout="@layout/fragment_profile_main" />
     <fragment
         android:id="@+id/habitsMainFragment"
         android:name="com.example.finalproject.ui.habits.habitsmainscreen.HabitsMainFragment"
@@ -41,5 +36,22 @@
             android:name="com.example.finalproject.ui.notes.notecreatescreen.NoteCreateFragment"
             android:label="fragment_note_create"
             tools:layout="@layout/fragment_note_create" />
+    </navigation>
+    <navigation android:id="@+id/profile_navigation"
+        app:startDestination="@id/profileMainFragment">
+        <fragment
+            android:id="@+id/profileMainFragment"
+            android:name="com.example.finalproject.ui.profile.profilemainscreen.ProfileMainFragment"
+            android:label="fragment_profile_main"
+            tools:layout="@layout/fragment_profile_main">
+            <action
+                android:id="@+id/action_profileMainFragment_to_categoriesFragment"
+                app:destination="@id/categoriesFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/categoriesFragment"
+            android:name="com.example.finalproject.ui.profile.categoriesscreen.CategoriesFragment"
+            android:label="fragment_categories"
+            tools:layout="@layout/fragment_categories" />
     </navigation>
 </navigation>
