@@ -17,11 +17,17 @@ class NotesListAdapter(var notesList: List<Note>, private val listener: MyClickL
 
         init {
             binding.root.setOnClickListener(this)
+            binding.deleteButton.setOnClickListener(this)
         }
         override fun onClick(view: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onClick(position)
+                if(view == binding.deleteButton){
+                    listener.onDeleteClick(position)
+                }
+                else{
+                    listener.onItemClick(position)
+                }
             }
         }
 

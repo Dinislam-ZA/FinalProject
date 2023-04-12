@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
@@ -20,7 +21,7 @@
             android:layout_height="match_parent"
             android:text="Category name"
             android:paddingStart="8dp"
-            android:textSize="28dp"
+            android:textSize="28sp"
             />
 
     </androidx.cardview.widget.CardView>

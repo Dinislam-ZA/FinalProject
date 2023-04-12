@@ -33,7 +33,12 @@ class NoteCreateFragment : Fragment() {
         val view = binding.root
 
         binding.saveButton.setOnClickListener {
-            viewModel.createNote(binding.titleTV.text.toString(), binding.noteTV.text.toString())
+            if(isForCreate){
+                viewModel.createNote(binding.titleTV.text.toString(), binding.noteTV.text.toString())
+            }
+            else{
+                viewModel.updateNote(binding.titleTV.text.toString(), binding.noteTV.text.toString())
+            }
             view.findNavController().popBackStack()
         }
 

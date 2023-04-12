@@ -5,9 +5,9 @@ import java.util.Date
 
 @Entity(tableName = "notes_table", indices = [Index(value = ["title"],
     unique = true)], foreignKeys = [
-    ForeignKey(entity = Categorie::class,
+    ForeignKey(entity = Category::class,
         parentColumns = ["id"],
-        childColumns = ["categorie_id"])])
+        childColumns = ["category_id"])])
 data class Note(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id:Long?,
@@ -15,5 +15,5 @@ data class Note(
     var title:String,
     @ColumnInfo(name = "note") var note:String? = "",
     @ColumnInfo(name = "createdAt") var createdAt:String,
-    @ColumnInfo(name = "categorie_id") var categorie: Long? = null
+    @ColumnInfo(name = "category_id") var categorie: Long? = null
 )

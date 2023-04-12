@@ -52,15 +52,24 @@ class NotesMainFragment : Fragment(), MyClickListener {
         return view
     }
 
-    fun notesChanges(notes: List<Note>){
+    private fun notesChanges(notes: List<Note>){
         notesList = notes
         adapter.notesList = notes
         adapter.notifyDataSetChanged()
     }
 
-    override fun onClick(position:Int){
+    override fun onItemClick(position:Int){
         val bundle = bundleOf("id" to notesList[position].id, "title" to notesList[position].title)
         binding.root.findNavController().navigate(R.id.action_notesMainFragment_to_noteCreateFragment, bundle)
+    }
+
+    override fun onDeleteClick(position: Int) {
+        val note = Note(notesList[position].id,
+            notesList[position].title,
+            notesList[position].note,
+            notesList[position].createdAt)
+
+        viewModel.deleteNote(note)
     }
 
 

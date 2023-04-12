@@ -1,5 +1,7 @@
 package com.example.finalproject.ui
 
 interface MyClickListener {
-    fun onClick(position:Int)
+    fun onItemClick(position:Int)
+
+    fun onDeleteClick(position:Int)
 }

@@ -1,7 +1,7 @@
 package com.example.finalproject.data.room
 
 import androidx.room.*
-import com.example.finalproject.data.model.Categorie
+import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Note
 import kotlinx.coroutines.flow.Flow
 
@@ -9,26 +9,24 @@ import kotlinx.coroutines.flow.Flow
 interface CategoriesDao {
 
     @Query("SELECT * FROM Categories_table")
-    fun getAll(): Flow<List<Categorie>>
+    fun getAll(): Flow<List<Category>>
 
-    @Query("SELECT * FROM Categories_table WHERE id IN (:categorieIds)")
-    fun loadAllByIds(categorieIds: IntArray): List<Categorie>
+    @Query("SELECT * FROM Categories_table WHERE id IN (:categoryIds)")
+    fun loadAllByIds(categoryIds: IntArray): List<Category>
 
     @Query("SELECT * FROM Categories_table WHERE name LIKE :name LIMIT 1")
-    suspend fun findByName(name: String): Categorie
+    suspend fun findByName(name: String): Category
 
     @Query("SELECT * FROM Categories_table WHERE id LIKE :id LIMIT 1")
-    fun findById(id:Long): Flow<Categorie>
+    fun findById(id:Long): Flow<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg Notes: Categorie)
+    fun insertAll(vararg Notes: Category)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(categorie: Categorie)
+    suspend fun insert(category: Category)
 
-//    @Update
-//    suspend fun update(title: String, note: Note)
 
     @Delete
-    fun delete(categorie: Categorie)
+    suspend fun delete(category: Category)
 }

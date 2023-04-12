@@ -11,7 +11,12 @@ class NoteRepo(val context:Context) {
     private val dao = db.noteDao()
 
 
+
     suspend fun insertNote(note: Note) = dao.insert(note)
+
+    suspend fun updateNote(note: Note) = dao.update(note)
+
+    suspend fun deleteNote(note: Note) = dao.delete(note)
 
     fun getAllNotes():Flow<List<Note>> = dao.getAll()
 

@@ -27,6 +27,16 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
         }
     }
 
+    fun updateNote(title:String, noteDes:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            if (title.isNotBlank()&& title.isNotEmpty()){
+                val date = LocalDateTime.now().toLocalDate().toString()
+                val note = Note(noteLive.value?.id,title, noteDes, noteLive.value?.createdAt ?: date)
+                noteRepo.updateNote(note)
+            }
+        }
+    }
+
     fun findNoteByTitle(title:String){
         var note:Note? = null
         viewModelScope.launch(Dispatchers.IO) {
