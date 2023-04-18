@@ -3,35 +3,36 @@ package com.example.finalproject.ui.notes.notecreatescreen
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Note
+import com.example.finalproject.data.repositories.CategoryRepo
 import com.example.finalproject.data.repositories.NoteRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
-class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
+class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRepo: CategoryRepo) : ViewModel() {
 
     var noteLive: MutableLiveData<Note?> = MutableLiveData(null)
+    var categoryLive: MutableLiveData<Category?> = MutableLiveData(null)
+    val categories = categoryRepo.getAllCategories().flowOn(Dispatchers.IO)
 
-    fun createNote(title:String, noteDes:String){
+    fun createNote(title:String, noteDes:String, categoryId:Long?){
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(null ,title, noteDes, date)
+                val note = Note(null ,title, noteDes, date, categoryId)
                 noteRepo.insertNote(note)
             }
         }
     }
 
-    fun updateNote(title:String, noteDes:String){
+    fun updateNote(title:String, noteDes:String, categoryId:Long?){
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(noteLive.value?.id,title, noteDes, noteLive.value?.createdAt ?: date)
+                val note = Note(noteLive.value?.id,title, noteDes, noteLive.value?.createdAt ?: date, categoryId)
                 noteRepo.updateNote(note)
             }
         }
@@ -39,11 +40,16 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
 
     fun findNoteByTitle(title:String){
         var note:Note? = null
+        var category: Category? = null
         viewModelScope.launch(Dispatchers.IO) {
             note = noteRepo.findNoteByTitle(title)
+            category = note?.categorie?.let { categoryRepo.findCategoryById(it) }
             noteLive.postValue(note)
+            categoryLive.postValue(category)
         }
     }
+
+
 
     companion object {
 
@@ -59,7 +65,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo) : ViewModel() {
 
 
                 return NoteCreateViewModel(
-                    NoteRepo(application.baseContext)
+                    NoteRepo(application.baseContext), CategoryRepo(application.baseContext)
                 ) as T
             }
         }

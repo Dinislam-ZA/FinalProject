@@ -1,5 +1,6 @@
 package com.example.finalproject.ui.profile.categoriesscreen
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.finalproject.R
 import com.example.finalproject.data.model.Category
-import com.example.finalproject.data.model.Note
 import com.example.finalproject.databinding.FragmentCategoriesBinding
 import com.example.finalproject.ui.MyClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -31,6 +31,7 @@ class CategoriesFragment : Fragment(), MyClickListener {
     private lateinit var binding:FragmentCategoriesBinding
     private lateinit var adapter: CategoriesListAdapter
     private var categoriesList:List<Category> = listOf()
+    var dialog:BottomSheetDialog? = null
 
     private var categoryColor = 0x59A5FF
     private lateinit var colorChooseView: TextView
@@ -75,13 +76,14 @@ class CategoriesFragment : Fragment(), MyClickListener {
 
     private fun bottomSheetDialogAppear(){
         val dialogView = layoutInflater.inflate(R.layout.category_create_dialog, null)
-        val dialog = context?.let { BottomSheetDialog(it) }
+        dialog = context?.let { BottomSheetDialog(it) }
         dialog?.setContentView(dialogView)
         colorChooseView = dialogView.findViewById(R.id.color_choose_view)
         val categoryNameEditText = dialogView.findViewById<EditText>(R.id.category_name)
         val createCategoryButton = dialogView.findViewById<Button>(R.id.create_category_button)
         createCategoryButton.setOnClickListener {
             viewModel.createCategory(categoryNameEditText.text.toString(), categoryColor)
+            dialog?.dismiss()
         }
         colorChooseView.setOnClickListener {
             colorPickDialogAppear(it)
@@ -91,8 +93,8 @@ class CategoriesFragment : Fragment(), MyClickListener {
 
 
     private fun colorPickDialogAppear(view: View) {
-        val dialog = AmbilWarnaDialog(context, 0x59A5FF, ColorPickListener(view))
-        dialog.show()
+        val dialogColor = AmbilWarnaDialog(context, 0x59A5FF, ColorPickListener(view))
+        dialogColor.show()
     }
 
     inner class ColorPickListener(val view: View): OnAmbilWarnaListener{
@@ -101,7 +103,7 @@ class CategoriesFragment : Fragment(), MyClickListener {
         }
 
         override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
-            colorChooseView.setBackgroundColor(color)
+            colorChooseView.backgroundTintList = ColorStateList.valueOf(color)
             categoryColor = color
         }
 
@@ -112,6 +114,10 @@ class CategoriesFragment : Fragment(), MyClickListener {
     }
 
     override fun onDeleteClick(position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCategoryClick(position: Int) {
         TODO("Not yet implemented")
     }
 

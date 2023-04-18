@@ -18,7 +18,7 @@ interface CategoriesDao {
     suspend fun findByName(name: String): Category
 
     @Query("SELECT * FROM Categories_table WHERE id LIKE :id LIMIT 1")
-    fun findById(id:Long): Flow<Category>
+    suspend fun findById(id:Long): Category
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg Notes: Category)

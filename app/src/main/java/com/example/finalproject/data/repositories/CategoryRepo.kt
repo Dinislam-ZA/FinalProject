@@ -15,6 +15,8 @@ class CategoryRepo(val context: Context) {
 
     suspend fun deleteCategory(category: Category) = dao.delete(category)
 
+    suspend fun findCategoryById(id: Long) = dao.findById(id)
+
     fun getAllCategories(): Flow<List<Category>> = dao.getAll()
 
 

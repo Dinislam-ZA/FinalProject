@@ -1,4 +1,4 @@
-package com.example.finalproject.ui.profile.categoriesscreen
+package com.example.finalproject.ui.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -10,7 +10,7 @@ import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.CategoryItemBinding
 import com.example.finalproject.ui.MyClickListener
 
-class CategoriesListAdapter(var categoriesList: List<Category>, private val listener: MyClickListener, val context:Context): RecyclerView.Adapter<CategoriesListAdapter.CategoryViewHolder>() {
+class CategoriesBottomSheetAdapter(var categoriesList: List<Category>, private val listener: MyClickListener, val context:Context): RecyclerView.Adapter<CategoriesBottomSheetAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(val binding: CategoryItemBinding, private val listener: MyClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
@@ -47,3 +47,6 @@ class CategoriesListAdapter(var categoriesList: List<Category>, private val list
         }
     }
 }
+
+
+

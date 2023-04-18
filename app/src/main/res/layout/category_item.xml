@@ -11,9 +11,10 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:layout_margin="8dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="12dp"
+        android:backgroundTint ="@color/blue_light"
         app:cardElevation="0dp"
-        android:backgroundTint ="@color/blue_light">
+        >
 
         <TextView
             android:id="@+id/category_name"

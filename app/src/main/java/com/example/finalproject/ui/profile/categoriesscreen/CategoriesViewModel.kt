@@ -5,15 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.finalproject.data.model.Category
-import com.example.finalproject.data.model.Note
 import com.example.finalproject.data.repositories.CategoryRepo
-import com.example.finalproject.ui.profile.profilemainscreen.ProfileMainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
-class CategoriesViewModel(val categoryRepo: CategoryRepo) : ViewModel() {
+
+class CategoriesViewModel(private val categoryRepo: CategoryRepo) : ViewModel() {
 
     val categories = categoryRepo.getAllCategories().flowOn(Dispatchers.IO)
 
