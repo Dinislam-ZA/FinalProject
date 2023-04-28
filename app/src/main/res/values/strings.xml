@@ -7,5 +7,8 @@
     <string name="habits">Habits</string>
     <string name="profile">Profile</string>
     <string name="schedule">Schedule</string>
+    <string name="delete_item">Delete</string>
+    <string name="notes_default_info">All notes</string>
+    <string name="tasks_default_info">All tasks</string>
 
 </resources>

@@ -16,12 +16,12 @@ import com.example.finalproject.R
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.CategoryBottomSheetBinding
 import com.example.finalproject.databinding.FragmentNoteCreateBinding
-import com.example.finalproject.ui.MyClickListener
+import com.example.finalproject.ui.SecondaryAdapterListener
 import com.example.finalproject.ui.adapters.CategoriesBottomSheetAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
-class NoteCreateFragment : Fragment(), MyClickListener {
+class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
 
     companion object {
         fun newInstance() = NoteCreateFragment()
@@ -45,7 +45,16 @@ class NoteCreateFragment : Fragment(), MyClickListener {
     ): View? {
         binding = FragmentNoteCreateBinding.inflate(inflater, container, false)
 
-        val view = binding.root
+
+        lifecycleScope.launch {
+            viewModel.categories.collect{it -> categoriesChanges(it)}
+        }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         categoryTV = binding.topicName
         toolBar = binding.toolbar
@@ -62,17 +71,7 @@ class NoteCreateFragment : Fragment(), MyClickListener {
             view.findNavController().popBackStack()
         }
 
-        binding.topicName.setOnClickListener {
-            bottomSheetDialogAppear()
-        }
-
-        binding.backButton.setOnClickListener {
-            view.findNavController().popBackStack()
-        }
-
         val title = arguments?.getString("title")
-
-
 
         if (title != null) {
             binding.noteTV.visibility = View.GONE
@@ -98,11 +97,14 @@ class NoteCreateFragment : Fragment(), MyClickListener {
             }
         }
 
-        lifecycleScope.launch {
-            viewModel.categories.collect{it -> categoriesChanges(it)}
+        binding.topicName.setOnClickListener {
+            bottomSheetDialogAppear()
         }
 
-        return binding.root
+        binding.backButton.setOnClickListener {
+            view.findNavController().popBackStack()
+        }
+
     }
 
 
@@ -124,21 +126,12 @@ class NoteCreateFragment : Fragment(), MyClickListener {
         dialog?.show()
     }
 
-    override fun onItemClick(position: Int) {
-       // binding.topicName.text = categoriesList[position].name
+
+    override fun onSecondaryListItemClick(position: Int) {
         categoryTV?.text = categoriesList[position].name
-       // binding.toolbar.setBackgroundColor(categoriesList[position].color)
         toolBar?.backgroundTintList = ColorStateList.valueOf(categoriesList[position].color)
         categoryId = categoriesList[position].id
         dialog?.dismiss()
-    }
-
-    override fun onDeleteClick(position: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onCategoryClick(position: Int) {
-        TODO("Not yet implemented")
     }
 
 

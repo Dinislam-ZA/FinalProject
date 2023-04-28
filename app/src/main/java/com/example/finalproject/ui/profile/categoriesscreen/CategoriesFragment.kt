@@ -9,19 +9,20 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.finalproject.R
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.FragmentCategoriesBinding
-import com.example.finalproject.ui.MyClickListener
+import com.example.finalproject.ui.MenuAdapterListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import yuku.ambilwarna.AmbilWarnaDialog
 import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener
 
-class CategoriesFragment : Fragment(), MyClickListener {
+class CategoriesFragment : Fragment(), MenuAdapterListener {
 
     companion object {
         fun newInstance() = CategoriesFragment()
@@ -41,7 +42,12 @@ class CategoriesFragment : Fragment(), MyClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCategoriesBinding.inflate(inflater, container, false)
-        val view = binding.root
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         adapter = context?.let {
             CategoriesListAdapter(
@@ -63,8 +69,6 @@ class CategoriesFragment : Fragment(), MyClickListener {
             viewModel.categories.collect{it -> categoriesChanges(it)}
         }
 
-
-        return view
     }
 
     private fun categoriesChanges(categories: List<Category>){
@@ -113,12 +117,9 @@ class CategoriesFragment : Fragment(), MyClickListener {
         TODO("Not yet implemented")
     }
 
-    override fun onDeleteClick(position: Int) {
+    override fun onDelete(position: Int, cardView: CardView) {
         TODO("Not yet implemented")
     }
 
-    override fun onCategoryClick(position: Int) {
-        TODO("Not yet implemented")
-    }
 
 }

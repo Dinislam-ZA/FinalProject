@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.CategoryItemBinding
-import com.example.finalproject.ui.MyClickListener
+import com.example.finalproject.ui.SecondaryAdapterListener
 
-class CategoriesBottomSheetAdapter(var categoriesList: List<Category>, private val listener: MyClickListener, val context:Context): RecyclerView.Adapter<CategoriesBottomSheetAdapter.CategoryViewHolder>() {
+class CategoriesBottomSheetAdapter(var categoriesList: List<Category>, private val listener: SecondaryAdapterListener, val context:Context): RecyclerView.Adapter<CategoriesBottomSheetAdapter.CategoryViewHolder>() {
 
-    inner class CategoryViewHolder(val binding: CategoryItemBinding, private val listener: MyClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+    inner class CategoryViewHolder(val binding: CategoryItemBinding, private val listener: SecondaryAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
         init {
             binding.root.setOnClickListener(this)
@@ -21,7 +21,7 @@ class CategoriesBottomSheetAdapter(var categoriesList: List<Category>, private v
         override fun onClick(p0: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position)
+                listener.onSecondaryListItemClick(position)
             }
         }
 

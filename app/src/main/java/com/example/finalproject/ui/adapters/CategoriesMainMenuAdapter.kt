@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.CategoryItemBinding
 import com.example.finalproject.databinding.CategoryMainMenuItemBinding
-import com.example.finalproject.ui.MyClickListener
+import com.example.finalproject.ui.SecondaryAdapterListener
 
-class CategoriesMainMenuAdapter(var categoriesList: List<Category>, private val listener: MyClickListener, val context:Context): RecyclerView.Adapter<CategoriesMainMenuAdapter.CategoryViewHolder>() {
+class CategoriesMainMenuAdapter(var categoriesList: List<Category>, private val listener: SecondaryAdapterListener, val context:Context): RecyclerView.Adapter<CategoriesMainMenuAdapter.CategoryViewHolder>() {
 
-    inner class CategoryViewHolder(val binding: CategoryMainMenuItemBinding, private val listener: MyClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+    inner class CategoryViewHolder(val binding: CategoryMainMenuItemBinding, private val listener: SecondaryAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
         init {
             binding.root.setOnClickListener(this)
@@ -24,7 +24,7 @@ class CategoriesMainMenuAdapter(var categoriesList: List<Category>, private val 
         override fun onClick(p0: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onCategoryClick(position)
+                listener.onSecondaryListItemClick(position)
             }
         }
 

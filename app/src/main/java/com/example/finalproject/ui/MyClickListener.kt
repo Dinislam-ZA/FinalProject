@@ -1,9 +1,17 @@
 package com.example.finalproject.ui
 
-interface MyClickListener {
+import androidx.cardview.widget.CardView
+
+interface MenuAdapterListener {
     fun onItemClick(position:Int)
 
-    fun onDeleteClick(position:Int)
+    fun onDelete(position:Int, cardView: CardView)
 
-    fun onCategoryClick(position: Int)
 }
+
+interface SecondaryAdapterListener{
+    fun onSecondaryListItemClick(position:Int)
+}
+
+
+

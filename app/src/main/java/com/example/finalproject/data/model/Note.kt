@@ -13,7 +13,7 @@ data class Note(
     @ColumnInfo(name = "id") val id:Long?,
     @ColumnInfo(name = "title")
     var title:String,
-    @ColumnInfo(name = "note") var note:String? = "",
+    @ColumnInfo(name = "note") var note:String = "",
     @ColumnInfo(name = "createdAt") var createdAt:String,
     @ColumnInfo(name = "category_id") var categorie: Long? = null
 )

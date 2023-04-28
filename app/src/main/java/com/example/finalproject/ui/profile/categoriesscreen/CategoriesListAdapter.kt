@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.CategoryItemBinding
-import com.example.finalproject.ui.MyClickListener
+import com.example.finalproject.ui.MenuAdapterListener
 
-class CategoriesListAdapter(var categoriesList: List<Category>, private val listener: MyClickListener, val context:Context): RecyclerView.Adapter<CategoriesListAdapter.CategoryViewHolder>() {
+class CategoriesListAdapter(var categoriesList: List<Category>, private val listener: MenuAdapterListener, val context:Context): RecyclerView.Adapter<CategoriesListAdapter.CategoryViewHolder>() {
 
-    inner class CategoryViewHolder(val binding: CategoryItemBinding, private val listener: MyClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+    inner class CategoryViewHolder(val binding: CategoryItemBinding, private val listener: MenuAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
         init {
             binding.root.setOnClickListener(this)

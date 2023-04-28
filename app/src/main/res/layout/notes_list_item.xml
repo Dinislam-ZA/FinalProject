@@ -22,30 +22,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/delete_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:layout_alignEnd="@+id/title"
-                    app:srcCompat="@drawable/baseline_delete_24" />
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="title"
-                    android:maxLines="2"
-                    android:textSize="20sp"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                />
 
 
 
