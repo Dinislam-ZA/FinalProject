@@ -22,7 +22,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(null ,title, noteDes, date, categoryId)
+                val note = Note(null ,title, noteDes, date, "Author" ,categoryId)
                 noteRepo.insertNote(note)
             }
         }
@@ -32,7 +32,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(noteLive.value?.id,title, noteDes, noteLive.value?.createdAt ?: date, categoryId)
+                val note = Note(noteLive.value?.id,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,categoryId)
                 noteRepo.updateNote(note)
             }
         }

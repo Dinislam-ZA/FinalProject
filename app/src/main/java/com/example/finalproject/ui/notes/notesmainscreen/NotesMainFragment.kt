@@ -20,6 +20,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.finalproject.R
+import com.example.finalproject.common.ExtraFunctions
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Note
 import com.example.finalproject.databinding.FragmentNotesMainBinding
@@ -72,10 +73,12 @@ class NotesMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
 
         adapter = context?.let { NotesListAdapter(notesList, this, it) }!!
         binding.RCView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.RCView.isNestedScrollingEnabled = false
         binding.RCView.adapter = adapter
 
         categoriesMainMenuAdapter = context?.let {CategoriesMainMenuAdapter(categoriesList, this, it)}!!
         binding.categoriesRvMain.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
+        binding.categoriesRvMain.isNestedScrollingEnabled = false
         binding.categoriesRvMain.adapter = categoriesMainMenuAdapter
 
         binding.addNoteButton.setOnClickListener {
@@ -93,16 +96,15 @@ class NotesMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
             mNotesList = mNotesList.filter { el -> el.categorie == noteCategoryFilter }
         }
         if(noteTextFilter.isNotEmpty()){
-            mNotesList = mNotesList.filter { el -> el.title.contains(noteTextFilter) || el.note.contains(noteTextFilter) }
+            mNotesList = mNotesList.filter { el -> el.title.lowercase().contains(noteTextFilter.lowercase()) || el.note.lowercase().contains(noteTextFilter.lowercase()) }
         }
-        adapter.notesList = mNotesList
-        adapter.notifyDataSetChanged()
+        adapter.setNotesList(mNotesList)
     }
 
     private fun categoriesChanges(categories: List<Category>){
         adapter.setCategoryList(categories)
         adapter.notifyDataSetChanged()
-        categoriesList = concatenate(listOf(noCategoryItem), categories)
+        categoriesList = ExtraFunctions.concatenate(listOf(noCategoryItem), categories)
         categoriesMainMenuAdapter.categoriesList = categoriesList
         categoriesMainMenuAdapter.notifyDataSetChanged()
     }
@@ -138,10 +140,6 @@ class NotesMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         notesChanges(notesList)
     }
 
-
-    private fun <T> concatenate(vararg lists: List<T>): List<T> {
-        return listOf(*lists).flatten()
-    }
 
     override fun onSecondaryListItemClick(position: Int) {
         if (position == 0){

@@ -10,20 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="12dp"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="8dp"
         android:backgroundTint ="@color/blue_light"
         app:cardElevation="0dp"
         >
-
-        <TextView
-            android:id="@+id/category_name"
+        
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Category name"
-            android:paddingStart="8dp"
-            android:textSize="28sp"
-            />
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/category_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category name"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                />
+
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

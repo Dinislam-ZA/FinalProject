@@ -6,13 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Note
+import com.example.finalproject.data.model.SubTask
+import com.example.finalproject.data.model.Task
 
 
-@Database(entities = [Note::class, Category::class], version = 8)
+@Database(entities = [Note::class, Category::class, Task::class, SubTask::class], version = 10)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 
     abstract fun categoriesDao(): CategoriesDao
+
+    abstract fun taskDao(): TaskDao
+
+    abstract fun subTaskDao(): SubTaskDao
 
     companion object{
 

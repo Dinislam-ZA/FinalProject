@@ -1,4 +1,4 @@
-package com.example.finalproject.ui.notes.notesmainscreen
+package com.example.finalproject.ui.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -8,28 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.finalproject.common.BaseAdapter
-import com.example.finalproject.common.DiffUtilCallBackCommon
 import com.example.finalproject.data.model.Category
-import com.example.finalproject.data.model.Note
-import com.example.finalproject.databinding.NotesListItemBinding
+import com.example.finalproject.data.model.Task
+import com.example.finalproject.databinding.TaskListItemBinding
 import com.example.finalproject.ui.MenuAdapterListener
 
-//class NotesListAdapter(): BaseAdapter<Note, NotesListItemBinding>(){
-//    override fun getLayoutResId(position: Int): Int {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onBind(binding: NotesListItemBinding, item: Note) {
-//        TODO("Not yet implemented")
-//    }
-//
-//}
-
-
-
-
-class NotesListAdapter(private var notesList: List<Note>, private val listener: MenuAdapterListener, val context:Context): RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
+class TasksListAdapter(private var tasksList: List<Task>, private val listener: MenuAdapterListener, val context: Context): RecyclerView.Adapter<TasksListAdapter.TaskViewHolder>() {
 
 
 
@@ -41,10 +25,10 @@ class NotesListAdapter(private var notesList: List<Note>, private val listener: 
         categoryList = categories
     }
 
-    fun setNotesList(newNotesList: List<Note>){
-        val diffCallback = NotesDiffCallback(newNotesList, notesList)
-        notesList = newNotesList
+    fun setNotesList(newTasksList: List<Task>){
+        val diffCallback = TasksDiffCallback(tasksList, newTasksList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
+        tasksList = newTasksList
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -71,7 +55,8 @@ class NotesListAdapter(private var notesList: List<Note>, private val listener: 
         return Color.parseColor("#59A5FF")
     }
 
-    inner class NoteViewHolder(val binding: NotesListItemBinding, private val listener: MenuAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener{
+    inner class TaskViewHolder(val binding: TaskListItemBinding, private val listener: MenuAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener{
+
 
         init {
             binding.cardView.setOnClickListener(this)
@@ -97,22 +82,24 @@ class NotesListAdapter(private var notesList: List<Note>, private val listener: 
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val binding = NotesListItemBinding.inflate(LayoutInflater.from(context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val binding = TaskListItemBinding.inflate(LayoutInflater.from(context), parent, false)
 
-        return NoteViewHolder(binding, listener)
+        return TaskViewHolder(binding, listener)
     }
 
     override fun getItemCount(): Int {
-        return notesList.size
+        return tasksList.size
     }
 
-    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         with(holder){
-            with(notesList[position]){
+            with(tasksList[position]){
                 binding.title.text = title
-                binding.note.text = note
-                binding.date.text = createdAt
+                binding.deadline.text = deadLine
+                binding.duration.text = taskDuration
+                binding.createdAt.text = createdAt
+                binding.author.text = "by $author"
                 val color = getCategoryColor(categorie)
                 binding.cardView.backgroundTintList = ColorStateList.valueOf(color)
 
@@ -123,7 +110,7 @@ class NotesListAdapter(private var notesList: List<Note>, private val listener: 
 }
 
 
-class NotesDiffCallback(private val newList:List<Note>, private val oldList:List<Note>):DiffUtil.Callback(){
+class TasksDiffCallback(private val newList:List<Task>, private val oldList:List<Task>): DiffUtil.Callback(){
     override fun getOldListSize() = oldList.size
 
     override fun getNewListSize() = newList.size
@@ -136,10 +123,10 @@ class NotesDiffCallback(private val newList:List<Note>, private val oldList:List
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val newNote = newList[newItemPosition]
-        val oldNote = oldList[oldItemPosition]
+        val newTask = newList[newItemPosition]
+        val oldTask = oldList[oldItemPosition]
 
-        return newNote == oldNote
+        return newTask == oldTask
     }
 
 }

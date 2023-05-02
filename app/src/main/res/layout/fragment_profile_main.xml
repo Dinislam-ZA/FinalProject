@@ -32,39 +32,60 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_textview_rounded_corners"
         android:backgroundTint="@color/grey"
         android:gravity="start"
+        android:minHeight="32dp"
         android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:minHeight="32dp"
         android:text="Friends list"
         android:textSize="18sp"
         app:layout_constraintCircleRadius="5sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/categories_button" />
 
     <TextView
         android:id="@+id/categories_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="256dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_textview_rounded_corners"
         android:backgroundTint="@color/grey"
         android:gravity="start"
+        android:minHeight="32dp"
         android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:minHeight="32dp"
         android:text="Categories"
         android:textSize="18sp"
         app:layout_constraintCircleRadius="5sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Log in/ Sign in"
+        android:backgroundTint="@color/blue_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

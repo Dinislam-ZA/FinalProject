@@ -4,9 +4,9 @@ import dagger.Component
 import javax.inject.Singleton
 
 
-/*
-@Singleton
-@Component(modules = [])
-interface AppComponent {
 
-}*/
+//@Singleton
+//@Component(modules = [])
+//interface AppComponent {
+//
+//}

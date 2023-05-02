@@ -14,6 +14,7 @@ data class Note(
     @ColumnInfo(name = "title")
     var title:String,
     @ColumnInfo(name = "note") var note:String = "",
-    @ColumnInfo(name = "createdAt") var createdAt:String,
+    @ColumnInfo(name = "createdAt") val createdAt:String,
+    @ColumnInfo(name = "author") var author:String? = "Author",
     @ColumnInfo(name = "category_id") var categorie: Long? = null
 )
