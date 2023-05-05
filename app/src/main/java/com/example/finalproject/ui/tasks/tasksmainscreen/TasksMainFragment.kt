@@ -8,9 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.finalproject.R
 import com.example.finalproject.common.ExtraFunctions
@@ -64,14 +68,20 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         super.onViewCreated(view, savedInstanceState)
 
         adapter = context?.let { TasksListAdapter(tasksList, this, it) }!!
-        binding.RCView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.RCView.isNestedScrollingEnabled = false
-        binding.RCView.adapter = adapter
+        binding.tasksRcView.layoutManager = LinearLayoutManager(context)
+        binding.tasksRcView.isNestedScrollingEnabled = false
+        binding.tasksRcView.adapter = adapter
 
         categoriesMainMenuAdapter = context?.let {CategoriesMainMenuAdapter(categoriesList, this, it)}!!
         binding.categoriesRvMain.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
         binding.categoriesRvMain.isNestedScrollingEnabled = false
         binding.categoriesRvMain.adapter = categoriesMainMenuAdapter
+
+        binding.taskSearchView.doOnTextChanged { text, start, before, count ->  searchTask(text.toString())}
+
+        binding.addTaskButton.setOnClickListener {
+            binding.root.findNavController().navigate(R.id.action_tasksMainFragment_to_taskCreateFragment)
+        }
     }
 
     private fun tasksChanges(tasks: List<Task>) {
@@ -95,7 +105,8 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
     }
 
     override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
+        //val bundle = bundleOf("id" to notesList[position].id, "title" to notesList[position].title)
+        binding.root.findNavController().navigate(R.id.action_tasksMainFragment_to_taskCreateFragment)
     }
 
     override fun onDelete(position: Int, cardView: CardView) {
@@ -111,6 +122,11 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
             binding.infoList.text = categoriesList[position].name
             taskCategoryFilter = categoriesList[position].id
         }
+        tasksChanges(tasksList)
+    }
+
+    private fun searchTask(text:String) {
+        taskTextFilter = text
         tasksChanges(tasksList)
     }
 

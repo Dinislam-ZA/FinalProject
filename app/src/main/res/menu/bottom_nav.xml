@@ -5,26 +5,31 @@
     <item
         android:id="@+id/profile_navigation"
         android:icon="@drawable/ic_profile"
+        android:iconTint="@color/blue_light"
         android:title="@string/profile"/>
 
     <item
         android:id="@+id/habitsMainFragment"
         android:icon="@drawable/ic_habbits"
+        android:iconTint="@color/blue_light"
         android:title="@string/habits"/>
 
     <item
         android:id="@+id/scheduleMainFragment"
         android:icon="@drawable/ic_scheduler"
+        android:iconTint="@color/blue_light"
         android:title="@string/schedule"/>
 
     <item
-        android:id="@+id/tasksMainFragment"
+        android:id="@+id/task_menu_navigation"
         android:icon="@drawable/ic_tasks"
+        android:iconTint="@color/blue_light"
         android:title="@string/tasks"/>
 
     <item
         android:id="@+id/note_menu_navigation"
         android:icon="@drawable/ic_notes"
+        android:iconTint="@color/blue_light"
         android:title="@string/notes"/>
 
 </menu>

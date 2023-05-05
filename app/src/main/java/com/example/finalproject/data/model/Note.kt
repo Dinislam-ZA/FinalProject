@@ -16,5 +16,6 @@ data class Note(
     @ColumnInfo(name = "note") var note:String = "",
     @ColumnInfo(name = "createdAt") val createdAt:String,
     @ColumnInfo(name = "author") var author:String? = "Author",
+    @ColumnInfo(name = "parent_task") var parentTask:Long? = null,
     @ColumnInfo(name = "category_id") var categorie: Long? = null
 )

@@ -15,11 +15,6 @@
         android:name="com.example.finalproject.ui.schedule.schedulemainscreen.ScheduleMainFragment"
         android:label="fragment_schedule_main"
         tools:layout="@layout/fragment_schedule_main" />
-    <fragment
-        android:id="@+id/tasksMainFragment"
-        android:name="com.example.finalproject.ui.tasks.tasksmainscreen.TasksMainFragment"
-        android:label="fragment_tasks_main"
-        tools:layout="@layout/fragment_tasks_main" />
     <navigation android:id="@+id/note_menu_navigation"
         app:startDestination="@id/notesMainFragment">
         <fragment
@@ -53,5 +48,27 @@
             android:name="com.example.finalproject.ui.profile.categoriesscreen.CategoriesFragment"
             android:label="fragment_categories"
             tools:layout="@layout/fragment_categories" />
+    </navigation>
+    <navigation android:id="@+id/task_menu_navigation"
+        app:startDestination="@id/tasksMainFragment">
+        <fragment
+            android:id="@+id/tasksMainFragment"
+            android:name="com.example.finalproject.ui.tasks.tasksmainscreen.TasksMainFragment"
+            android:label="fragment_tasks_main"
+            tools:layout="@layout/fragment_tasks_main">
+            <action
+                android:id="@+id/action_tasksMainFragment_to_taskCreateFragment"
+                app:destination="@id/taskCreateFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/taskCreateFragment"
+            android:name="com.example.finalproject.ui.tasks.taskscreatescreen.TaskCreateFragment"
+            android:label="fragment_task_create"
+            tools:layout="@layout/fragment_task_create" >
+            <action
+                android:id="@+id/action_tasksCreateFragment_to_notesCreateFragment"
+                app:destination="@+id/noteCreateFragment"/>
+
+        </fragment>
     </navigation>
 </navigation>

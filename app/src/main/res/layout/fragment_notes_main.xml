@@ -7,7 +7,7 @@
     tools:context=".ui.notes.notesmainscreen.NotesMainFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/grey"
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar2"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         >
 
 
@@ -38,6 +38,7 @@
                 android:id="@+id/categories_rv_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 />
 
 
@@ -96,7 +97,7 @@
         android:layout_height="34dp"
         android:layout_marginStart="8dp"
         android:src="@drawable/app_icon_small"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,7 +116,7 @@
         android:background="@drawable/edittext_background"
         android:backgroundTint="@color/grey_dark"
         android:hint="Search note"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toEndOf="@id/icon_app"
         app:layout_constraintTop_toTopOf="parent" />
 

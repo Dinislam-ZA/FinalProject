@@ -10,7 +10,7 @@ import com.example.finalproject.data.model.SubTask
 import com.example.finalproject.data.model.Task
 
 
-@Database(entities = [Note::class, Category::class, Task::class, SubTask::class], version = 10)
+@Database(entities = [Note::class, Category::class, Task::class, SubTask::class], version = 11)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 

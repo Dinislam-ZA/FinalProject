@@ -22,7 +22,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(null ,title, noteDes, date, "Author" ,categoryId)
+                val note = Note(null ,title, noteDes, date, "Author" ,null,categoryId)
                 noteRepo.insertNote(note)
             }
         }
