@@ -13,5 +13,9 @@ interface SecondaryAdapterListener{
     fun onSecondaryListItemClick(position:Int)
 }
 
+interface SubTaskItemsListener{
+    fun onSubTaskChanged(position:Int)
+}
+
 
 

@@ -1,5 +1,6 @@
 package com.example.finalproject.ui.notes.notecreatescreen
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -21,6 +22,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
     fun createNote(title:String, noteDes:String, categoryId:Long?){
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
+                Log.d("vm", categoryId.toString())
                 val date = LocalDateTime.now().toLocalDate().toString()
                 val note = Note(null ,title, noteDes, date, "Author" ,null,categoryId)
                 noteRepo.insertNote(note)
@@ -28,11 +30,12 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
         }
     }
 
-    fun updateNote(title:String, noteDes:String, categoryId:Long?){
+    fun updateNote(id:Long?, title:String, noteDes:String, categoryId:Long?){
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
+                Log.d("vm", categoryId.toString())
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(noteLive.value?.id,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,categoryId)
+                val note = Note(id ,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,null ,categoryId)
                 noteRepo.updateNote(note)
             }
         }

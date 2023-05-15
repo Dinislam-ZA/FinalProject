@@ -25,8 +25,8 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
         categoryList = categories
     }
 
-    fun setNotesList(newTasksList: List<Task>){
-        val diffCallback = TasksDiffCallback(tasksList, newTasksList)
+    fun setTasksList(newTasksList: List<Task>){
+        val diffCallback = TasksDiffCallback(newTasksList, tasksList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         tasksList = newTasksList
         diffResult.dispatchUpdatesTo(this)
@@ -96,14 +96,12 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
         with(holder){
             with(tasksList[position]){
                 binding.title.text = title
-                binding.deadline.text = deadLine
-                binding.duration.text = taskDuration
+                //binding.deadline.text = deadLine
+                //binding.duration.text = taskDuration
                 binding.createdAt.text = createdAt
                 binding.author.text = "by $author"
                 val color = getCategoryColor(categorie)
                 binding.cardView.backgroundTintList = ColorStateList.valueOf(color)
-
-
             }
         }
     }

@@ -53,84 +53,93 @@
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-    <EditText
-        android:id="@+id/titleTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:ems="10"
-        android:hint="Title"
-        android:inputType="textCapSentences"
-        android:minHeight="48dp"
-        android:maxLength="40"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <TextView
-        android:id="@+id/create_subtask_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="Create sub Tasks"
-        android:textSize="18sp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTV" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_subtask_tv"
-        tools:itemCount="3"
-        tools:listitem="@layout/subtask_list_item" />
-
-    <TextView
-        android:id="@+id/date_Tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="Date and time parameters"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/edittext_background"
-        android:backgroundTint="@color/grey"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_Tv">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <EditText
+            android:id="@+id/titleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:ems="10"
+            android:hint="Title"
+            android:inputType="textCapSentences"
+            android:minHeight="48dp"
+            android:maxLength="40"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/deadline_date_picker"
+            android:id="@+id/create_subtask_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Create sub Tasks"
+            android:textSize="18sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subtask_Rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="3"
+            tools:listitem="@layout/subtask_list_item" />
+
+        <TextView
+            android:id="@+id/add_Subtask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add subtask"
+            android:textSize="22sp"
+            android:textColor="@color/blue_light"
+            android:gravity="center"
+            />
+
+
+        <TextView
+            android:id="@+id/date_Tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Date and time parameters"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
+        <View
+            android:id="@+id/fou_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/deadline_date_Tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:minHeight="48dp"
+            android:background="@drawable/usual_button_selectable"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Choose deadline date"
@@ -148,10 +157,11 @@
 
         <TextView
             android:id="@+id/execution_date_Tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:background="@drawable/usual_button_selectable"
             android:minHeight="48dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
@@ -169,11 +179,12 @@
 
         <TextView
             android:id="@+id/execution_time_Tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:minHeight="48dp"
+            android:background="@drawable/usual_button_selectable"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Choose execution time"
@@ -189,42 +200,48 @@
             android:background="@color/black" />
 
         <TextView
-            android:id="@+id/deadline_date_Tv"
-            android:layout_width="wrap_content"
+            android:id="@+id/duration_Tv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:minHeight="48dp"
+            android:background="@drawable/usual_button_selectable"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Choose duration"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
+        <View
+            android:id="@+id/fous_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/add_Note_Tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/black"
+            android:text="Add note" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notes_Rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="2"
+            tools:listitem="@layout/notes_list_item" />
+
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/add_Note_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:textColor="@color/black"
-        android:text="Add note"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notes_Rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="2"
-        tools:listitem="@layout/notes_list_item"
-        app:layout_constraintStart_toStartOf="@id/add_Note_Tv"
-        app:layout_constraintTop_toBottomOf="@+id/add_Note_Tv" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -232,9 +249,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/titleTV"
-        app:layout_constraintEnd_toEndOf="@+id/titleTV"
-        app:layout_constraintStart_toStartOf="@+id/titleTV"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 

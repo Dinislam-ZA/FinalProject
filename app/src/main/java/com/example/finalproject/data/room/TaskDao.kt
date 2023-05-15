@@ -19,20 +19,26 @@ interface TaskDao {
 
     @Delete
     suspend fun deleteTask(task: Task)
+
+    @Update
+    suspend fun updateTask(task: Task)
 }
 
 @Dao
 interface SubTaskDao {
 
-    @Query("SELECT * FROM subtasks_table WHERE task_id = :taskId")
-    fun getAllSubTasksByTaskId(taskId: Int): Flow<List<SubTask>>
+    @Query("SELECT * FROM subtasks_table WHERE task_id = :taskId ORDER BY position")
+    fun getAllSubTasksByTaskId(taskId: Long): Flow<List<SubTask>>
 
     @Query("SELECT * FROM subtasks_table WHERE id = :subTaskId")
-    fun getSubTaskById(subTaskId: Int): Flow<SubTask>
+    fun getSubTaskById(subTaskId: Long): Flow<SubTask>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSubTask(subTask: SubTask)
 
     @Delete
     suspend fun deleteSubTask(subTask: SubTask)
+
+    @Update
+    suspend fun updateSubTask(subTask: SubTask)
 }

@@ -4,13 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.finalproject.data.model.Category
-import com.example.finalproject.data.model.Note
-import com.example.finalproject.data.model.SubTask
-import com.example.finalproject.data.model.Task
+import com.example.finalproject.data.model.*
 
 
-@Database(entities = [Note::class, Category::class, Task::class, SubTask::class], version = 11)
+@Database(entities = [Note::class, Category::class, Task::class, SubTask::class, NotesToTasks::class], version = 17)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 
@@ -19,6 +16,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
     abstract fun subTaskDao(): SubTaskDao
+
+    abstract fun notesToTasksDao(): NotesToTasksDao
 
     companion object{
 

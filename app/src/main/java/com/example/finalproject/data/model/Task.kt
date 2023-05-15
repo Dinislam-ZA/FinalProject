@@ -9,21 +9,25 @@ import androidx.room.*
         childColumns = ["category_id"])])
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id:Long?,
+    @ColumnInfo(name = "id") val id:Long? = null,
     @ColumnInfo(name = "title")
     var title:String,
     @ColumnInfo(name = "deadline")
-    var deadLine:String,
+    var deadLine:Long? = null,
     @ColumnInfo(name = "timeOfRunning")
-    var taskDuration:String? = null,
+    var taskDuration:Long? = null,
     @ColumnInfo(name = "createdAt")
     var createdAt:String,
     @ColumnInfo(name = "category_id")
     var categorie: Long? = null,
     @ColumnInfo(name = "author")
-    var author: String? = "Author",
+    var author: Long? = null,
     @ColumnInfo(name = "status")
-    var status: Int = 0
+    var status: Int = 0,
+    @ColumnInfo(name = "execution_date")
+    var executionDate:Long? = null,
+    @ColumnInfo(name = "execution_time")
+    var executionTime:Long? = null
 )
 
 @Entity(tableName = "subtasks_table", indices = [Index(value = ["title"],
@@ -33,14 +37,12 @@ data class Task(
         childColumns = ["task_id"])])
 data class SubTask(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id:Long?,
-    @ColumnInfo(name = "task_id") val task_id:Long?,
+    @ColumnInfo(name = "id") val id:Long? = null,
+    @ColumnInfo(name = "task_id") val task_id:Long,
     @ColumnInfo(name = "title")
     var title:String,
-    @ColumnInfo(name = "deadline")
-    var deadLine:String,
-    @ColumnInfo(name = "timeOfRunning")
-    var taskDuration:String? = null,
     @ColumnInfo(name = "status")
-    var status: Int = 0
+    var status: Boolean,
+    @ColumnInfo(name = "position")
+    var position:Int
 )

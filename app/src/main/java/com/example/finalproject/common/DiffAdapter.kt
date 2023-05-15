@@ -1,6 +1,7 @@
 package com.example.finalproject.common
 
 import android.content.ClipData.Item
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,17 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseAdapter<T, VB : ViewDataBinding>(DiffUtilCallback: DiffUtilCallBackCommon<T>) : RecyclerView.Adapter<BaseAdapter<T, VB>.ViewHolder>() {
+abstract class BaseAdapter<T, VB : ViewBinding>(context: Context) : RecyclerView.Adapter<BaseAdapter<T, VB>.ViewHolder>() {
 
-    private val items = mutableListOf<T>()
+    var items = listOf<T>()
     protected lateinit var binding: VB
 
-    fun submitList(newItems: List<T>) {
-
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
-    }
+    abstract fun submitList(newItems: List<T>)
 
     override fun getItemCount(): Int {
         return items.size
@@ -30,25 +26,25 @@ abstract class BaseAdapter<T, VB : ViewDataBinding>(DiffUtilCallback: DiffUtilCa
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        binding = DataBindingUtil.inflate(inflater, viewType, parent, false)
-        return ViewHolder(binding)
+        return createViewHolderAbstract(parent, viewType)
     }
 
+    abstract fun createViewHolderAbstract(parent: ViewGroup, viewType: Int): ViewHolder
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], position)
     }
 
     protected abstract fun getLayoutResId(position: Int): Int
 
     inner class ViewHolder(private val binding: VB) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: T) {
-            onBind(binding, item)
-            binding.executePendingBindings()
+        fun bind(item: T, position: Int) {
+            onBind(binding, item, position)
+
         }
     }
 
-    protected abstract fun onBind(binding: VB, item: T)
+    protected abstract fun onBind(binding: VB, item: T,position: Int)
 }
 
 

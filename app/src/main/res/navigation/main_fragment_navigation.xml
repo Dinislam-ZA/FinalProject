@@ -48,6 +48,13 @@
             android:name="com.example.finalproject.ui.profile.categoriesscreen.CategoriesFragment"
             android:label="fragment_categories"
             tools:layout="@layout/fragment_categories" />
+        <action
+            android:id="@+id/action_global_noteCreateFragment"
+            app:destination="@id/noteCreateFragment"
+            app:popUpTo="@id/noteCreateFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="false"
+            />
     </navigation>
     <navigation android:id="@+id/task_menu_navigation"
         app:startDestination="@id/tasksMainFragment">
@@ -64,11 +71,6 @@
             android:id="@+id/taskCreateFragment"
             android:name="com.example.finalproject.ui.tasks.taskscreatescreen.TaskCreateFragment"
             android:label="fragment_task_create"
-            tools:layout="@layout/fragment_task_create" >
-            <action
-                android:id="@+id/action_tasksCreateFragment_to_notesCreateFragment"
-                app:destination="@+id/noteCreateFragment"/>
-
-        </fragment>
+            tools:layout="@layout/fragment_task_create" />
     </navigation>
 </navigation>

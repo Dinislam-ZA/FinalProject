@@ -17,6 +17,7 @@ class SplashScreenFragment() : Fragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
     get() = Dispatchers.Main + Job()
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_splash_screen, container, false)
     }
@@ -31,6 +32,16 @@ class SplashScreenFragment() : Fragment(), CoroutineScope {
         }
     }
 
+
+//    override fun onResume() {
+//        super.onResume()
+//        launch {
+//            delay(3000)
+//            withContext(Dispatchers.Main){
+//                view?.findNavController()?.navigate(R.id.action_splashScreenFragment_to_mainFragment)
+//            }
+//        }
+//    }
 
 
 

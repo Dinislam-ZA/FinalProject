@@ -32,8 +32,6 @@ import com.example.finalproject.ui.MenuAdapterListener
 class NotesListAdapter(private var notesList: List<Note>, private val listener: MenuAdapterListener, val context:Context): RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
 
-
-
     private val colorCache = HashMap<Long?, Int>()
     private var categoryList: List<Category> = listOf()
 

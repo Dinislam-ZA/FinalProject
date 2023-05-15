@@ -35,6 +35,7 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
     private var dialog:BottomSheetDialog? = null
     private var categoryId:Long? = null
 
+    private var noteId:Long? = null
     private var categoryTV:TextView? = null
     private var toolBar: Toolbar? = null
 
@@ -62,11 +63,12 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
         adapter = context?.let { CategoriesBottomSheetAdapter(categoriesList, this, it) }!!
 
         binding.saveButton.setOnClickListener {
+            Log.d("some", categoryId.toString())
             if(isForCreate){
                 viewModel.createNote(binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId)
             }
             else{
-                viewModel.updateNote(binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId)
+                viewModel.updateNote(noteId, binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId)
             }
             view.findNavController().popBackStack()
         }
@@ -81,6 +83,8 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
             viewModel.findNoteByTitle(title)
             viewModel.noteLive.observe(viewLifecycleOwner){
                 if (it != null) {
+                    categoryId = it.categorie
+                    noteId = it.id
                     binding.noteTV.visibility = View.VISIBLE
                     binding.titleTV.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE

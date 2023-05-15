@@ -1,5 +1,6 @@
 package com.example.finalproject.ui.tasks.tasksmainscreen
 
+import android.app.Dialog
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,9 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -35,7 +39,7 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         fun newInstance() = TasksMainFragment()
     }
 
-    private val viewModel: TasksMainViewModel by viewModels { TasksMainViewModel.Factory }
+    private val viewModel: TasksMainViewModel by activityViewModels { TasksMainViewModel.Factory }
     private lateinit var binding: FragmentTasksMainBinding
     private lateinit var adapter: TasksListAdapter
     private lateinit var categoriesMainMenuAdapter: CategoriesMainMenuAdapter
@@ -80,8 +84,25 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         binding.taskSearchView.doOnTextChanged { text, start, before, count ->  searchTask(text.toString())}
 
         binding.addTaskButton.setOnClickListener {
-            binding.root.findNavController().navigate(R.id.action_tasksMainFragment_to_taskCreateFragment)
+            openTaskAddDialog()
         }
+    }
+
+    private fun openTaskAddDialog(){
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.add_task_dialog)
+        dialog.setTitle("Add task")
+        dialog.setCancelable(true) // Разрешение закрытия диалога по клику вне него
+
+        val editText = dialog.findViewById<EditText>(R.id.task_title_add)
+        val button = dialog.findViewById<Button>(R.id.create_task_button)
+        button.setOnClickListener {
+            val text = editText.text.toString()
+            viewModel.createTask(text)
+            dialog.dismiss() // Закрытие диалогового окна
+        }
+
+        dialog.show() // Показ диалогового окна
     }
 
     private fun tasksChanges(tasks: List<Task>) {
@@ -93,19 +114,18 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         if(taskTextFilter.isNotEmpty()){
             mTasksList = mTasksList.filter { el -> el.title.lowercase().contains(taskTextFilter.lowercase()) }
         }
-        adapter.setNotesList(mTasksList)
+        adapter.setTasksList(mTasksList)
     }
 
     private fun categoriesChanges(categories: List<Category>) {
         adapter.setCategoryList(categories)
-        adapter.notifyDataSetChanged()
         categoriesList = ExtraFunctions.concatenate(listOf(noCategoryItem), categories)
         categoriesMainMenuAdapter.categoriesList = categoriesList
         categoriesMainMenuAdapter.notifyDataSetChanged()
     }
 
     override fun onItemClick(position: Int) {
-        //val bundle = bundleOf("id" to notesList[position].id, "title" to notesList[position].title)
+        viewModel.selectTask(tasksList[position])
         binding.root.findNavController().navigate(R.id.action_tasksMainFragment_to_taskCreateFragment)
     }
 
