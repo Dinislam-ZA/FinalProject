@@ -57,13 +57,13 @@ class TaskRepo(val context: Context) {
 
     // Метод для добавления заметки к задаче
     suspend fun addNoteToTask(noteId: Long, taskId: Long) {
-        val notesToTasks = NotesToTasks(null,noteId, taskId)
+        val notesToTasks = NotesToTasks(taskId, noteId)
         notesToTasksDao.insert(notesToTasks)
     }
 
     // Метод для удаления заметки из задачи
     suspend fun removeNoteFromTask(noteId: Long, taskId: Long) {
-        val notesToTasks = NotesToTasks(null,noteId, taskId)
+        val notesToTasks = NotesToTasks(taskId, noteId)
         notesToTasksDao.delete(notesToTasks)
     }
 

@@ -9,7 +9,7 @@ import androidx.room.*
         childColumns = ["category_id"])])
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id:Long? = null,
+    @ColumnInfo(name = "id") val id:Long,
     @ColumnInfo(name = "title")
     var title:String,
     @ColumnInfo(name = "deadline")
@@ -32,13 +32,13 @@ data class Task(
 
 @Entity(tableName = "subtasks_table", indices = [Index(value = ["title"],
     unique = true)], foreignKeys = [
-    ForeignKey(entity = Category::class,
+    ForeignKey(entity = Task::class,
         parentColumns = ["id"],
         childColumns = ["task_id"])])
 data class SubTask(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id:Long? = null,
-    @ColumnInfo(name = "task_id") val task_id:Long,
+    @ColumnInfo(name = "task_id") val task_id:Long?,
     @ColumnInfo(name = "title")
     var title:String,
     @ColumnInfo(name = "status")

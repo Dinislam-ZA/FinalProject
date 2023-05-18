@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.finalproject.R
 import com.example.finalproject.databinding.FragmentProfileMainBinding
 
@@ -27,10 +28,20 @@ class ProfileMainFragment : Fragment() {
         binding = FragmentProfileMainBinding.inflate(inflater, container, false)
         val view = binding.root
 
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.categoriesButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_profileMainFragment_to_categoriesFragment)
         }
-        return view
+
+        binding.loginButton.setOnClickListener {
+            view.findNavController().navigate(R.id.action_profileMainFragment_to_loginFragment)
+        }
     }
 
 

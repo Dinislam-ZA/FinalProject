@@ -10,5 +10,9 @@
     <string name="delete_item">Delete</string>
     <string name="notes_default_info">All notes</string>
     <string name="tasks_default_info">All tasks</string>
+    <string name="username_field_hint">Enter username</string>
+    <string name="password_field_hint">Enter password</string>
+    <string name="login_hint">Login</string>
+    <string name="registration_hint">Registration</string>
 
 </resources>

@@ -3,7 +3,7 @@
 
 
     <item
-        android:id="@+id/profile_navigation"
+        android:id="@+id/profileMainFragment"
         android:icon="@drawable/ic_profile"
         android:iconTint="@color/blue_light"
         android:title="@string/profile"/>
@@ -21,13 +21,13 @@
         android:title="@string/schedule"/>
 
     <item
-        android:id="@+id/task_menu_navigation"
+        android:id="@+id/tasksMainFragment"
         android:icon="@drawable/ic_tasks"
         android:iconTint="@color/blue_light"
         android:title="@string/tasks"/>
 
     <item
-        android:id="@+id/note_menu_navigation"
+        android:id="@+id/notesMainFragment"
         android:icon="@drawable/ic_notes"
         android:iconTint="@color/blue_light"
         android:title="@string/notes"/>

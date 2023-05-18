@@ -24,8 +24,10 @@ class NoteRepo(val context:Context) {
 
     suspend fun findNoteByTitle(title:String):Note = dao.findByName(title)
 
+    suspend fun findNoteById(id:Long):Note = dao.findById(id)
+
     suspend fun addNoteToTask(noteId: Long, taskId: Long) {
-        val notesToTasks = NotesToTasks(null ,noteId, taskId)
+        val notesToTasks = NotesToTasks(taskId, noteId)
         notesToTasksDao.insert(notesToTasks)
     }
 }

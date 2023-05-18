@@ -7,17 +7,17 @@
     tools:context=".ui.SplashScreenFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/splash_screen_ic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        android:layout_marginBottom="324dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_app" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/splash_screen_TV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="256dp"

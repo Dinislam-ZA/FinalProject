@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.finalproject.R
+import com.example.finalproject.common.setNavigationResult
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.databinding.CategoryBottomSheetBinding
 import com.example.finalproject.databinding.FragmentNoteCreateBinding
@@ -36,6 +37,7 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
     private var categoryId:Long? = null
 
     private var noteId:Long? = null
+    private var mTaskId:Long? = null
     private var categoryTV:TextView? = null
     private var toolBar: Toolbar? = null
 
@@ -65,13 +67,30 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
         binding.saveButton.setOnClickListener {
             Log.d("some", categoryId.toString())
             if(isForCreate){
-                viewModel.createNote(binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId)
+                viewModel.createNote(binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId, mTaskId)
+                if(mTaskId != null){
+                    viewModel.noteLive.observe(viewLifecycleOwner){
+                        if (it != null) {
+                            Log.d("note_id", it.id.toString())
+                            Log.d("task_id", mTaskId.toString())
+                            viewModel.addNoteToSelectedTask(it.id, mTaskId!!)
+                            view.findNavController().popBackStack()
+                        }
+                    }
+                }
+                else view.findNavController().popBackStack()
             }
             else{
-                viewModel.updateNote(noteId, binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId)
+                viewModel.updateNote(noteId, binding.titleTV.text.toString(), binding.noteTV.text.toString(), categoryId, mTaskId)
+                view.findNavController().popBackStack()
             }
-            view.findNavController().popBackStack()
         }
+
+        val taskId = arguments?.getLong("task_id")
+        if (taskId != null){
+            mTaskId = taskId
+        }
+
 
         val title = arguments?.getString("title")
 
@@ -101,9 +120,6 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
             }
         }
 
-        binding.topicName.setOnClickListener {
-            bottomSheetDialogAppear()
-        }
 
         binding.backButton.setOnClickListener {
             view.findNavController().popBackStack()

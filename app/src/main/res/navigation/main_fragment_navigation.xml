@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_fragment_navigation"
-    app:startDestination="@id/profile_navigation">
+    app:startDestination="@id/profileMainFragment">
 
     <fragment
         android:id="@+id/habitsMainFragment"
@@ -14,63 +14,84 @@
         android:id="@+id/scheduleMainFragment"
         android:name="com.example.finalproject.ui.schedule.schedulemainscreen.ScheduleMainFragment"
         android:label="fragment_schedule_main"
-        tools:layout="@layout/fragment_schedule_main" />
-    <navigation android:id="@+id/note_menu_navigation"
-        app:startDestination="@id/notesMainFragment">
-        <fragment
-            android:id="@+id/notesMainFragment"
-            android:name="com.example.finalproject.ui.notes.notesmainscreen.NotesMainFragment"
-            android:label="fragment_notes_main"
-            tools:layout="@layout/fragment_notes_main">
-            <action
-                android:id="@+id/action_notesMainFragment_to_noteCreateFragment"
-                app:destination="@id/noteCreateFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/noteCreateFragment"
-            android:name="com.example.finalproject.ui.notes.notecreatescreen.NoteCreateFragment"
-            android:label="fragment_note_create"
-            tools:layout="@layout/fragment_note_create" />
-    </navigation>
-    <navigation android:id="@+id/profile_navigation"
-        app:startDestination="@id/profileMainFragment">
-        <fragment
-            android:id="@+id/profileMainFragment"
-            android:name="com.example.finalproject.ui.profile.profilemainscreen.ProfileMainFragment"
-            android:label="fragment_profile_main"
-            tools:layout="@layout/fragment_profile_main">
-            <action
-                android:id="@+id/action_profileMainFragment_to_categoriesFragment"
-                app:destination="@id/categoriesFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/categoriesFragment"
-            android:name="com.example.finalproject.ui.profile.categoriesscreen.CategoriesFragment"
-            android:label="fragment_categories"
-            tools:layout="@layout/fragment_categories" />
+        tools:layout="@layout/fragment_schedule_main" >
         <action
-            android:id="@+id/action_global_noteCreateFragment"
-            app:destination="@id/noteCreateFragment"
-            app:popUpTo="@id/noteCreateFragment"
-            app:popUpToInclusive="true"
-            app:launchSingleTop="false"
-            />
-    </navigation>
-    <navigation android:id="@+id/task_menu_navigation"
-        app:startDestination="@id/tasksMainFragment">
-        <fragment
-            android:id="@+id/tasksMainFragment"
-            android:name="com.example.finalproject.ui.tasks.tasksmainscreen.TasksMainFragment"
-            android:label="fragment_tasks_main"
-            tools:layout="@layout/fragment_tasks_main">
-            <action
-                android:id="@+id/action_tasksMainFragment_to_taskCreateFragment"
-                app:destination="@id/taskCreateFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/taskCreateFragment"
-            android:name="com.example.finalproject.ui.tasks.taskscreatescreen.TaskCreateFragment"
-            android:label="fragment_task_create"
-            tools:layout="@layout/fragment_task_create" />
-    </navigation>
+            android:id="@+id/action_scheduleMainFragment_to_habitsMainFragment"
+            app:destination="@id/habitsMainFragment"
+            app:popUpTo="@id/scheduleMainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notesMainFragment"
+        android:name="com.example.finalproject.ui.notes.notesmainscreen.NotesMainFragment"
+        android:label="fragment_notes_main"
+        tools:layout="@layout/fragment_notes_main">
+        <action
+            android:id="@+id/action_notesMainFragment_to_noteCreateFragment"
+            app:destination="@id/noteCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteCreateFragment"
+        android:name="com.example.finalproject.ui.notes.notecreatescreen.NoteCreateFragment"
+        android:label="fragment_note_create"
+        tools:layout="@layout/fragment_note_create" />
+    <fragment
+        android:id="@+id/profileMainFragment"
+        android:name="com.example.finalproject.ui.profile.profilemainscreen.ProfileMainFragment"
+        android:label="fragment_profile_main"
+        tools:layout="@layout/fragment_profile_main">
+        <action
+            android:id="@+id/action_profileMainFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_profileMainFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/profileMainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.finalproject.ui.profile.categoriesscreen.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" />
+    <action
+        android:id="@+id/action_global_noteCreateFragment"
+        app:destination="@id/noteCreateFragment"
+        app:popUpTo="@id/noteCreateFragment"
+        app:popUpToInclusive="true"
+        app:launchSingleTop="false"
+        />
+    <fragment
+        android:id="@+id/tasksMainFragment"
+        android:name="com.example.finalproject.ui.tasks.tasksmainscreen.TasksMainFragment"
+        android:label="fragment_tasks_main"
+        tools:layout="@layout/fragment_tasks_main">
+        <action
+            android:id="@+id/action_tasksMainFragment_to_taskCreateFragment"
+            app:destination="@id/taskCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskCreateFragment"
+        android:name="com.example.finalproject.ui.tasks.taskscreatescreen.TaskCreateFragment"
+        android:label="fragment_task_create"
+        tools:layout="@layout/fragment_task_create" >
+        <action
+            android:id="@+id/action_taskCreateFragment_to_noteCreateFragment"
+            app:destination="@id/noteCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.finalproject.ui.auth.loginscreen.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.finalproject.ui.auth.registerscreen.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
 </navigation>

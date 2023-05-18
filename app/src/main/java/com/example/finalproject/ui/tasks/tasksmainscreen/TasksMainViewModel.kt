@@ -18,24 +18,29 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
     private val _selectedTask = MutableLiveData<Task?>()
     val selectedTask: LiveData<Task?> = _selectedTask
 
+    private val _selectedTaskCategory = MutableLiveData<Category?>(null)
+    val selectedTaskCategory: LiveData<Category?> = _selectedTaskCategory
+
     val tasks = taskRepo.getAllTasks().flowOn(Dispatchers.IO)
     val categories = categoryRepo.getAllCategories().flowOn(Dispatchers.IO)
-    val notesForSelectedTask = taskRepo.getNotesForTask(selectedTask.value?.id ?: 0L).flowOn(Dispatchers.IO)
-    val subTasksForSelectedTask = taskRepo.getAllSubTasksByTaskId(selectedTask.value?.id ?: 0L).flowOn(Dispatchers.IO)
-
-    var categoryLive: MutableLiveData<Category?> = MutableLiveData(null)
+    val notesForSelectedTask = taskRepo.getNotesForTask(selectedTask.value?.id ?: 1).flowOn(Dispatchers.IO)
+    val subTasksForSelectedTask = taskRepo.getAllSubTasksByTaskId(selectedTask.value?.id ?: 1).flowOn(Dispatchers.IO)
 
 
     // Метод для выбора задачи
     fun selectTask(task: Task?) {
         _selectedTask.value = task
+        viewModelScope.launch(Dispatchers.IO) {
+            val taskCategory = task?.categorie?.let { categoryRepo.findCategoryById(it) }
+            _selectedTaskCategory.postValue(taskCategory)
+        }
     }
 
 
     fun createTask(title: String){
         viewModelScope.launch(Dispatchers.IO) {
             val date = LocalDateTime.now().toLocalDate().toString()
-            val task = Task(title = title, createdAt = date)
+            val task = Task(title = title, createdAt = date, id = 0)
             taskRepo.insertTask(task)
         }
     }
@@ -50,7 +55,7 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val task = Task(id = selectedTask.value?.id, title = title,
+                val task = Task(id = selectedTask.value?.id ?: 0, title = title,
                     deadLine = deadline,
                     taskDuration = duration,
                     executionDate = executionDate,
@@ -90,15 +95,8 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
         }
     }
 
-    // Метод для добавления заметки к выбранной задаче
-    fun addNoteToSelectedTask(noteId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (selectedTask.value?.id != null) {
-                val selectedTaskId = selectedTask.value?.id!!
-                taskRepo.addNoteToTask(noteId, selectedTask.value?.id!!)
-            }
-        }
-    }
+
+
 
     fun addSubTaskToSelectedTask(title: String,status: Boolean, position: Int){
         viewModelScope.launch(Dispatchers.IO) {

@@ -19,23 +19,24 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
     var categoryLive: MutableLiveData<Category?> = MutableLiveData(null)
     val categories = categoryRepo.getAllCategories().flowOn(Dispatchers.IO)
 
-    fun createNote(title:String, noteDes:String, categoryId:Long?){
+    fun createNote(title:String, noteDes:String, categoryId:Long?, taskId:Long?){
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 Log.d("vm", categoryId.toString())
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(null ,title, noteDes, date, "Author" ,null,categoryId)
-                noteRepo.insertNote(note)
+                val note = Note(0 ,title, noteDes, date, "Author" ,taskId,categoryId)
+                val id = noteRepo.insertNote(note)
+                noteLive.postValue(noteRepo.findNoteById(id))
             }
         }
     }
 
-    fun updateNote(id:Long?, title:String, noteDes:String, categoryId:Long?){
+    fun updateNote(id:Long?, title:String, noteDes:String, categoryId:Long?, taskId:Long?){
         viewModelScope.launch(Dispatchers.IO) {
             if (title.isNotBlank()&& title.isNotEmpty()){
                 Log.d("vm", categoryId.toString())
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(id ,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,null ,categoryId)
+                val note = Note(0 ,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,taskId ,categoryId)
                 noteRepo.updateNote(note)
             }
         }
@@ -49,6 +50,13 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
             category = note?.categorie?.let { categoryRepo.findCategoryById(it) }
             noteLive.postValue(note)
             categoryLive.postValue(category)
+        }
+    }
+
+    // Метод для добавления заметки к выбранной задаче
+    fun addNoteToSelectedTask(noteId: Long, taskId:Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            noteRepo.addNoteToTask(noteId, taskId)
         }
     }
 

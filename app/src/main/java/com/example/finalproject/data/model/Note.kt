@@ -10,7 +10,7 @@ import java.util.Date
         childColumns = ["category_id"])])
 data class Note(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id:Long?,
+    @ColumnInfo(name = "id") val id:Long,
     @ColumnInfo(name = "title")
     var title:String,
     @ColumnInfo(name = "note") var note:String = "",

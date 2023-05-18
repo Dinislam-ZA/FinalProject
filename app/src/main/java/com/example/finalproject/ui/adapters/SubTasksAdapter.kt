@@ -87,11 +87,10 @@ class SubTasksAdapter(val context: Context, private val listener: SubTaskItemsLi
     private var items:List<SubTask> = listOf()
 
     fun submitList(newItems: List<SubTask>) {
-        //val diffCallback = SubTaskDiffUtil(newItems, items)
+        val diffCallback = SubTaskDiffUtil(newItems, items)
         items = newItems
-        //val diffResult = DiffUtil.calculateDiff(diffCallback)
-        //diffResult.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class SubTaskViewHolder(val binding: SubtaskListItemBinding, private val listener: SubTaskItemsListener) : RecyclerView.ViewHolder(binding.root) {
@@ -123,11 +122,16 @@ class SubTasksAdapter(val context: Context, private val listener: SubTaskItemsLi
                 binding.checkbox.isChecked = status
                 binding.subtaskTitle.setOnFocusChangeListener { view, b ->
                     if(!b){
-                        listener.onSubTaskChanged(position)
+                        val eText = view as EditText
+                        listener.onSubTaskChanged(eText.text.toString(), position)
                     }
                 }
 
             }
         }
+    }
+
+    fun deleteItem(position: Int){
+        listener.deleteSubTask(position)
     }
 }

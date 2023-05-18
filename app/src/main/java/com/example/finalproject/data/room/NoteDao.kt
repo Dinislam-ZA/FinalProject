@@ -16,13 +16,13 @@ interface NoteDao {
     suspend fun findByName(title: String): Note
 
     @Query("SELECT * FROM notes_table WHERE id LIKE :id LIMIT 1")
-    fun findById(id:Long): Flow<Note>
+    fun findById(id:Long): Note
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg Notes: Note)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(note:Note)
+    suspend fun insert(note:Note):Long
 
     @Update
     suspend fun update(Note: Note)

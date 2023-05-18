@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.data.model.Note
@@ -42,11 +44,16 @@ class NotesInTasksDiffUtil(private val newList:List<Note>, private val oldList:L
 class NotesInTasksAdapter(val context: Context, private val listener: OnNoteInTaskClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items:List<Note> = listOf()
-    private var color: Int = Color.BLUE
+    private var color: Int = Color.parseColor("#59A5FF")
 
     companion object {
         private const val TYPE_ADD_NOTE = 0
         private const val TYPE_NOTE = 1
+    }
+
+    fun setColor(newColor:Int?){
+        if(newColor!=null) color = newColor
+        notifyDataSetChanged()
     }
 
     fun submitList(newItems: List<Note>) {
@@ -56,15 +63,26 @@ class NotesInTasksAdapter(val context: Context, private val listener: OnNoteInTa
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class NotesInTasksViewHolder(val binding: NotesInTaskListItemBinding, private val listener: OnNoteInTaskClickListener) : RecyclerView.ViewHolder(binding.root) {
+    inner class NotesInTasksViewHolder(val binding: NotesInTaskListItemBinding, private val listener: OnNoteInTaskClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener{
         init {
             binding.cardView.backgroundTintList = ColorStateList.valueOf(color)
-            binding.root.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onNoteClick(position)
-                }
+            binding.root.setOnClickListener(this)
+            binding.root.setOnLongClickListener(this)
+        }
+        override fun onClick(p0: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onNoteClick(position)
             }
+        }
+
+        override fun onLongClick(p0: View?): Boolean {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onNoteLongClick(position, binding.cardView)
+                return true
+            }
+            return false
         }
     }
 
@@ -115,5 +133,7 @@ class NotesInTasksAdapter(val context: Context, private val listener: OnNoteInTa
 
 interface OnNoteInTaskClickListener {
     fun onNoteClick(position: Int)
+
+    fun onNoteLongClick(position: Int, cardView: CardView)
     fun onAddNoteClick()
 }

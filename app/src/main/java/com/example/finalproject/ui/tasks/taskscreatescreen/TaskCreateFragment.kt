@@ -4,11 +4,14 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -42,14 +45,15 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterListener, SubTaskItemsListener,
-    OnNoteInTaskClickListener {
+class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsListener,
+    OnNoteInTaskClickListener, PopupMenu.OnMenuItemClickListener {
 
     companion object {
         fun newInstance() = TaskCreateFragment()
     }
 
-   // private val viewModel: TaskCreateViewModel by viewModels {TaskCreateViewModel.Factory}
+
+    private var popUpMenu:PopupMenu? = null
 
     private val viewModel: TasksMainViewModel by activityViewModels { TasksMainViewModel.Factory }
     private lateinit var binding: FragmentTaskCreateBinding
@@ -62,10 +66,11 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterList
 
     private var categoriesList:List<Category> = listOf()
     private var categoryId:Long? = null
+    private var color:Int? = null
     private var categoryTV: TextView? = null
-    private val selectedTask:Task? = null
+    private var selectedTask:Task? = null
 
-    private var notesList:List<Note> = listOf(Note(title = "", id = null, createdAt = ""), Note(title = "Opa", id = null, createdAt = ""))
+    private var notesList:List<Note> = listOf()
     private var subTasksList:MutableList<SubTask> = mutableListOf()
 
     private var dialog:BottomSheetDialog? = null
@@ -202,10 +207,11 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterList
         }
 
         binding.addSubtask.setOnClickListener {
-            val subTask = SubTask(title = "SubTask", status = false, task_id = -1, position = 2)
+            val subTask = SubTask(title = "SubTask$position", status = false, task_id = selectedTask?.id, position = position)
             position++
             subTasksList.add(subTask)
-            subTasksAdapter.submitList(subTasksList)
+            val umSubTasksList = subTasksList.toList()
+            subTasksAdapter.submitList(umSubTasksList)
         }
 
     }
@@ -213,7 +219,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterList
 
 
 
-    var position:Long = 1
+    var position:Int = 1
 
     private fun categoriesChanges(categories: List<Category>){
         categoriesList = categories
@@ -221,8 +227,8 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterList
     }
 
     private fun notesChanges(notes: List<Note>){
-        notesList = ExtraFunctions.concatenate(notesList, notes)
-        notesAdapter.submitList(notes)
+        notesList = ExtraFunctions.concatenate(listOf(Note(title = "", id = -1, createdAt = "")), notes)
+        notesAdapter.submitList(notesList)
     }
 
 
@@ -240,44 +246,48 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterList
 
     override fun onSecondaryListItemClick(position: Int) {
         categoryTV?.text = categoriesList[position].name
-        toolBar?.backgroundTintList = ColorStateList.valueOf(categoriesList[position].color)
+        binding.topicName.setTextColor(categoriesList[position].color)
         categoryId = categoriesList[position].id
         dialog?.dismiss()
     }
 
-
-
-    override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
+    override fun onSubTaskChanged(text: String, position: Int) {
+        viewModel.addSubTaskToSelectedTask(text, subTasksList[position].status, subTasksList[position].position)
     }
 
-    override fun onDelete(position: Int, cardView: CardView) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSubTaskChanged(position: Int) {
-        viewModel.addSubTaskToSelectedTask(subTasksList[position].title, subTasksList[position].status, position)
+    override fun deleteSubTask(position: Int) {
+        viewModel.deleteSubTask(subTasksList[position].title, subTasksList[position].status, subTasksList[position].position)
     }
 
     private fun isOpenForEdit(): Boolean{
-        val selectedTask = viewModel.selectedTask.value
-        if(selectedTask != null){
+        val mSelectedTask = viewModel.selectedTask.value
+        selectedTask = mSelectedTask
+        if(mSelectedTask != null){
             with(binding){
-                titleTV.setText(selectedTask.title)
-                if(selectedTask.deadLine != null) deadlineDateTv.text = dateFormat.format(selectedTask.deadLine)
-                if(selectedTask.executionDate != null) executionDateTv.text = dateFormat.format(selectedTask.executionDate)
-                if(selectedTask.executionTime != null) executionTimeTv.text = timeFormat.format(selectedTask.executionTime)
-                if(selectedTask.taskDuration != null) durationTv.text = timeFormat.format(selectedTask.taskDuration)
+                titleTV.setText(mSelectedTask.title)
+                if(mSelectedTask.deadLine != null) deadlineDateTv.text = dateFormat.format(mSelectedTask.deadLine)
+                if(mSelectedTask.executionDate != null) executionDateTv.text = dateFormat.format(mSelectedTask.executionDate)
+                if(mSelectedTask.executionTime != null) executionTimeTv.text = timeFormat.format(mSelectedTask.executionTime)
+                if(mSelectedTask.taskDuration != null) durationTv.text = timeFormat.format(mSelectedTask.taskDuration)
+                categoryId = mSelectedTask.categorie
             }
 
+            viewModel.selectedTaskCategory.observe(viewLifecycleOwner){
+                if (it!=null){
+                    color = it.color
+                    notesAdapter.setColor(color)
+                    categoryTV!!.text = it.name
+                    binding.topicName.setTextColor(color!!)
+                }
+            }
 
             lifecycleScope.launch {
                 viewModel.subTasksForSelectedTask.collect{it -> subTasksAdapter.submitList(it)}
             }
 
-//            lifecycleScope.launch {
-//                viewModel.notesForSelectedTask.collect{it -> notesChanges(it)}
-//            }
+            lifecycleScope.launch {
+                viewModel.notesForSelectedTask.collect{it -> notesChanges(it)}
+            }
             return true
         }
         return false
@@ -299,21 +309,36 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, MenuAdapterList
         notesAdapter.submitList(notesList)
     }
 
-    fun changeGraphToRoot(): NavController {
-        val navController = binding.root.findNavController()
-        navController.setGraph(R.navigation.main_fragment_navigation)
-        return  navController
+    override fun onNoteClick(position: Int) {
+        val bundle = bundleOf("id" to notesList[position].id, "title" to notesList[position].title)
+        binding.root.findNavController().navigate(R.id.action_taskCreateFragment_to_noteCreateFragment, bundle)
     }
 
-    override fun onNoteClick(position: Int) {
-      //  val navController = findNavController(R.id.mainFragment)
-        binding.root.findNavController().setGraph(R.navigation.main_fragment_navigation)
-        binding.root.findNavController().navigate(R.id.action_global_noteCreateFragment)
+    private var selectedNote:Note? = null
+    override fun onNoteLongClick(position: Int, cardView: CardView) {
+        popUpAppear(cardView)
+
+        selectedNote = notesList[position]
     }
 
     override fun onAddNoteClick() {
-        binding.root.findNavController().setGraph(R.navigation.main_fragment_navigation)
-        binding.root.findNavController().navigate(R.id.action_global_noteCreateFragment)
+        val bundle = bundleOf("task_id" to selectedTask?.id)
+        binding.root.findNavController().navigate(R.id.action_taskCreateFragment_to_noteCreateFragment, bundle)
+    }
+
+    private fun popUpAppear(cardView: CardView) {
+        popUpMenu = context?.let { PopupMenu(it, cardView) }
+        popUpMenu?.setOnMenuItemClickListener(this)
+        popUpMenu?.inflate(R.menu.pop_up_menu)
+        popUpMenu?.show()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if(item?.itemId == R.id.delete_item){
+            selectedNote?.id?.let { viewModel.removeNoteFromSelectedTask(it) }
+            return true
+        }
+        return false
     }
 
 }
@@ -347,4 +372,5 @@ class ItemMoveCallback(private val adapter: SubTasksAdapter) : ItemTouchHelper.C
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
     }
+
 }
