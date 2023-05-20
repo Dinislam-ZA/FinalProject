@@ -17,9 +17,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 import com.example.finalproject.R
 import com.example.finalproject.common.ExtraFunctions
 import com.example.finalproject.data.model.Category
@@ -29,11 +27,14 @@ import com.example.finalproject.databinding.FragmentTasksMainBinding
 import com.example.finalproject.ui.MenuAdapterListener
 import com.example.finalproject.ui.SecondaryAdapterListener
 import com.example.finalproject.ui.adapters.CategoriesMainMenuAdapter
+import com.example.finalproject.ui.adapters.SubTasksAdapter
+import com.example.finalproject.ui.adapters.TaskAdapterListener
 import com.example.finalproject.ui.adapters.TasksListAdapter
 import com.example.finalproject.ui.notes.notesmainscreen.NotesListAdapter
+import com.example.finalproject.ui.tasks.taskscreatescreen.ItemMoveCallback
 import kotlinx.coroutines.launch
 
-class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListener {
+class TasksMainFragment : Fragment(), TaskAdapterListener, SecondaryAdapterListener {
 
     companion object {
         fun newInstance() = TasksMainFragment()
@@ -75,6 +76,10 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         binding.tasksRcView.layoutManager = LinearLayoutManager(context)
         binding.tasksRcView.isNestedScrollingEnabled = false
         binding.tasksRcView.adapter = adapter
+
+        val itemTouchCallback = ItemMoveCallback(adapter)
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(binding.tasksRcView)
 
         categoriesMainMenuAdapter = context?.let {CategoriesMainMenuAdapter(categoriesList, this, it)}!!
         binding.categoriesRvMain.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
@@ -129,9 +134,10 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         binding.root.findNavController().navigate(R.id.action_tasksMainFragment_to_taskCreateFragment)
     }
 
-    override fun onDelete(position: Int, cardView: CardView) {
-        TODO("Not yet implemented")
+    override fun onDeleteTask(position: Int) {
+        viewModel.deleteTask(tasksList[position])
     }
+
 
     override fun onSecondaryListItemClick(position: Int) {
         if (position == 0){
@@ -150,5 +156,34 @@ class TasksMainFragment : Fragment(), MenuAdapterListener, SecondaryAdapterListe
         tasksChanges(tasksList)
     }
 
+
+}
+
+class ItemMoveCallback(private val adapter: TasksListAdapter) : ItemTouchHelper.Callback() {
+
+    override fun isLongPressDragEnabled(): Boolean {
+        return true
+    }
+
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN  // Движение вверх и вниз разрешено
+        val swipeFlags = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT  // Свайп влево и вправо разрешен
+        return makeMovementFlags(dragFlags, swipeFlags)
+    }
+
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        return false
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        adapter.deleteItem(viewHolder.adapterPosition)
+    }
 
 }

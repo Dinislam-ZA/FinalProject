@@ -9,6 +9,9 @@ import com.example.finalproject.data.model.Task
 import com.example.finalproject.data.repositories.CategoryRepo
 import com.example.finalproject.data.repositories.TaskRepo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -23,8 +26,18 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
 
     val tasks = taskRepo.getAllTasks().flowOn(Dispatchers.IO)
     val categories = categoryRepo.getAllCategories().flowOn(Dispatchers.IO)
-    val notesForSelectedTask = taskRepo.getNotesForTask(selectedTask.value?.id ?: 1).flowOn(Dispatchers.IO)
-    val subTasksForSelectedTask = taskRepo.getAllSubTasksByTaskId(selectedTask.value?.id ?: 1).flowOn(Dispatchers.IO)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val notesForSelectedTask: Flow<List<Note>> = _selectedTask.asFlow().flatMapLatest {
+        it -> taskRepo.getNotesForTask(it?.id ?: 0)
+    }.flowOn(Dispatchers.IO)
+ //   val notesForSelectedTask = taskRepo.getNotesForTask(selectedTask.value?.id ?: 0).flowOn(Dispatchers.IO)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val subTasksForSelectedTask: Flow<List<SubTask>> = _selectedTask.asFlow().flatMapLatest {
+            it -> taskRepo.getAllSubTasksByTaskId(it?.id ?: 0)
+    }.flowOn(Dispatchers.IO)
+  //  val subTasksForSelectedTask = taskRepo.getAllSubTasksByTaskId(selectedTask.value?.id ?: 0).flowOn(Dispatchers.IO)
 
 
     // Метод для выбора задачи
@@ -88,9 +101,8 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
         }
     }
 
-    fun deleteSubTask(title: String, status: Boolean, position: Int){
+    fun deleteSubTask(subTask: SubTask){
         viewModelScope.launch(Dispatchers.IO){
-            val subTask = SubTask(title = title, status = status, task_id = selectedTask.value?.id!!, position = position)
             taskRepo.deleteSubTask(subTask)
         }
     }
@@ -98,11 +110,10 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
 
 
 
-    fun addSubTaskToSelectedTask(title: String,status: Boolean, position: Int){
+    fun addSubTaskToSelectedTask(subTask: SubTask){
         viewModelScope.launch(Dispatchers.IO) {
             if (selectedTask.value?.id != null) {
                 val selectedTaskId = selectedTask.value?.id!!
-                val subTask = SubTask(task_id = selectedTaskId, title = title, status = status, position = position)
                 taskRepo.insertSubTask(subTask)
             }
         }

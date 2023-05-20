@@ -71,7 +71,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
     private var selectedTask:Task? = null
 
     private var notesList:List<Note> = listOf()
-    private var subTasksList:MutableList<SubTask> = mutableListOf()
+    private var subTasksList:List<SubTask> = listOf()
 
     private var dialog:BottomSheetDialog? = null
     private var toolBar: Toolbar? = null
@@ -208,18 +208,14 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
 
         binding.addSubtask.setOnClickListener {
             val subTask = SubTask(title = "SubTask$position", status = false, task_id = selectedTask?.id, position = position)
-            position++
-            subTasksList.add(subTask)
-            val umSubTasksList = subTasksList.toList()
-            subTasksAdapter.submitList(umSubTasksList)
+            viewModel.addSubTaskToSelectedTask(subTask)
         }
 
     }
 
-
-
-
     var position:Int = 1
+
+
 
     private fun categoriesChanges(categories: List<Category>){
         categoriesList = categories
@@ -229,6 +225,12 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
     private fun notesChanges(notes: List<Note>){
         notesList = ExtraFunctions.concatenate(listOf(Note(title = "", id = -1, createdAt = "")), notes)
         notesAdapter.submitList(notesList)
+    }
+
+    private fun subTasksChanges(subtasks: List<SubTask>){
+        subTasksList = subtasks
+        position = subTasksList.size + 1
+        subTasksAdapter.submitList(subTasksList)
     }
 
 
@@ -251,12 +253,30 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
         dialog?.dismiss()
     }
 
-    override fun onSubTaskChanged(text: String, position: Int) {
-        viewModel.addSubTaskToSelectedTask(text, subTasksList[position].status, subTasksList[position].position)
+    override fun onSubTaskTextChanged(text: String, position: Int) {
+        val subTask = subTasksList[position]
+        subTask.title = text
+        viewModel.addSubTaskToSelectedTask(subTask)
+    }
+
+    override fun onSubTaskStatusChanged(isChecked: Boolean, position: Int) {
+        val subTask = subTasksList[position]
+        subTask.status = isChecked
+        viewModel.addSubTaskToSelectedTask(subTask)
+    }
+
+    override fun onSubTaskMoved(fromPos: Int, toPos: Int) {
+        val subTaskFirst = subTasksList[fromPos]
+        val subTaskSecond = subTasksList[toPos]
+        val pos = subTaskFirst.position
+        subTaskFirst.position = subTaskSecond.position
+        subTaskSecond.position = pos
+        viewModel.addSubTaskToSelectedTask(subTaskSecond)
+        viewModel.addSubTaskToSelectedTask(subTaskFirst)
     }
 
     override fun deleteSubTask(position: Int) {
-        viewModel.deleteSubTask(subTasksList[position].title, subTasksList[position].status, subTasksList[position].position)
+        viewModel.deleteSubTask(subTasksList[position])
     }
 
     private fun isOpenForEdit(): Boolean{
@@ -282,7 +302,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
             }
 
             lifecycleScope.launch {
-                viewModel.subTasksForSelectedTask.collect{it -> subTasksAdapter.submitList(it)}
+                viewModel.subTasksForSelectedTask.collect{it -> subTasksChanges(it)}
             }
 
             lifecycleScope.launch {
@@ -370,7 +390,7 @@ class ItemMoveCallback(private val adapter: SubTasksAdapter) : ItemTouchHelper.C
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+        adapter.deleteItem(viewHolder.adapterPosition)
     }
 
 }

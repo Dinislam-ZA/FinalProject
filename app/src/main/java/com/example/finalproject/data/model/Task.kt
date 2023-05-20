@@ -30,11 +30,13 @@ data class Task(
     var executionTime:Long? = null
 )
 
-@Entity(tableName = "subtasks_table", indices = [Index(value = ["title"],
+@Entity(tableName = "subtasks_table", indices = [Index(value = ["title", "task_id"],
     unique = true)], foreignKeys = [
     ForeignKey(entity = Task::class,
         parentColumns = ["id"],
-        childColumns = ["task_id"])])
+        childColumns = ["task_id"],
+        onDelete = ForeignKey.CASCADE
+        )])
 data class SubTask(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id:Long? = null,

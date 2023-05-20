@@ -34,9 +34,18 @@ class ScheduleMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.button.setOnClickListener {
-            binding.root.findNavController().navigate(R.id.action_scheduleMainFragment_to_habitsMainFragment)
-        }
     }
+
+    fun newEventAction(view: View) {
+
+    }
+
+    fun nextDayAction(view: View) {
+
+    }
+    fun previousDayAction(view: View) {
+
+    }
+
 
 }

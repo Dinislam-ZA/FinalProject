@@ -14,7 +14,11 @@ interface SecondaryAdapterListener{
 }
 
 interface SubTaskItemsListener{
-    fun onSubTaskChanged(text:String ,position:Int)
+    fun onSubTaskTextChanged(text:String ,position:Int)
+
+    fun onSubTaskStatusChanged(isChecked: Boolean ,position:Int)
+
+    fun onSubTaskMoved(fromPos: Int, toPos: Int)
 
     fun deleteSubTask(position: Int)
 }

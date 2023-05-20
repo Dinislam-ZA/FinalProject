@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -98,10 +99,11 @@ class SubTasksAdapter(val context: Context, private val listener: SubTaskItemsLi
 
 
     fun moveItem(fromPosition: Int, toPosition: Int) {
-            // Перемещаем элементы в списке
+            //Перемещаем элементы в списке
             Collections.swap(items, fromPosition, toPosition)
             // Уведомляем адаптер об изменении позиции элементов
             notifyItemMoved(fromPosition, toPosition)
+        listener.onSubTaskMoved(fromPosition, toPosition)
     }
 
 
@@ -115,6 +117,10 @@ class SubTasksAdapter(val context: Context, private val listener: SubTaskItemsLi
         return items.size
     }
 
+    fun deleteItem(position: Int){
+        listener.deleteSubTask(position)
+    }
+
     override fun onBindViewHolder(holder: SubTaskViewHolder, position: Int) {
         with(holder){
             with(items[position]){
@@ -123,15 +129,14 @@ class SubTasksAdapter(val context: Context, private val listener: SubTaskItemsLi
                 binding.subtaskTitle.setOnFocusChangeListener { view, b ->
                     if(!b){
                         val eText = view as EditText
-                        listener.onSubTaskChanged(eText.text.toString(), position)
+                        listener.onSubTaskTextChanged(eText.text.toString(), position)
                     }
+                }
+                binding.checkbox.setOnCheckedChangeListener { button, isChecked ->
+                    listener.onSubTaskStatusChanged(isChecked, position)
+                }
                 }
 
             }
         }
-    }
-
-    fun deleteItem(position: Int){
-        listener.deleteSubTask(position)
-    }
 }

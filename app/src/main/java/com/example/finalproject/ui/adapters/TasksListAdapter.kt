@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.data.model.Category
@@ -13,7 +14,7 @@ import com.example.finalproject.data.model.Task
 import com.example.finalproject.databinding.TaskListItemBinding
 import com.example.finalproject.ui.MenuAdapterListener
 
-class TasksListAdapter(private var tasksList: List<Task>, private val listener: MenuAdapterListener, val context: Context): RecyclerView.Adapter<TasksListAdapter.TaskViewHolder>() {
+class TasksListAdapter(private var tasksList: List<Task>, private val listener: TaskAdapterListener, val context: Context): RecyclerView.Adapter<TasksListAdapter.TaskViewHolder>() {
 
 
 
@@ -55,12 +56,11 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
         return Color.parseColor("#59A5FF")
     }
 
-    inner class TaskViewHolder(val binding: TaskListItemBinding, private val listener: MenuAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener{
+    inner class TaskViewHolder(val binding: TaskListItemBinding, private val listener: TaskAdapterListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
 
         init {
             binding.cardView.setOnClickListener(this)
-            binding.cardView.setOnLongClickListener(this)
         }
 
         override fun onClick(view: View?) {
@@ -69,16 +69,6 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
                 listener.onItemClick(position)
             }
         }
-
-        override fun onLongClick(view: View?): Boolean {
-            val position = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onDelete(position, binding.cardView)
-                return true
-            }
-            return false
-        }
-
 
     }
 
@@ -105,6 +95,10 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
             }
         }
     }
+
+    fun deleteItem(position: Int) {
+        listener.onDeleteTask(position)
+    }
 }
 
 
@@ -126,5 +120,12 @@ class TasksDiffCallback(private val newList:List<Task>, private val oldList:List
 
         return newTask == oldTask
     }
+
+}
+
+interface TaskAdapterListener {
+    fun onItemClick(position:Int)
+
+    fun onDeleteTask(position:Int)
 
 }
