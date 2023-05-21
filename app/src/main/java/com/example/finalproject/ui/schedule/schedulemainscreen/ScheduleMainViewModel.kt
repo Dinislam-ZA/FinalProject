@@ -4,12 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.finalproject.data.repositories.CategoryRepo
+import com.example.finalproject.data.repositories.ScheduleRepo
 import com.example.finalproject.data.repositories.TaskRepo
 import com.example.finalproject.ui.tasks.taskscreatescreen.TaskCreateViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 
-class ScheduleMainViewModel : ViewModel() {
+class ScheduleMainViewModel(private val scheduleRepo: ScheduleRepo, private val categoryRepo: CategoryRepo) : ViewModel() {
 
-
+    val tasks = scheduleRepo.getAllTasks().flowOn(Dispatchers.IO)
+    val categories = categoryRepo.getAllCategories().flowOn(Dispatchers.IO)
 
     companion object {
 
@@ -25,7 +29,7 @@ class ScheduleMainViewModel : ViewModel() {
 
 
                 return ScheduleMainViewModel(
-
+                    ScheduleRepo(application.baseContext), CategoryRepo(application.baseContext)
                 ) as T
             }
         }
