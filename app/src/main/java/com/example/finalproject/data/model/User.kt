@@ -7,6 +7,6 @@ data class User(
 )
 
 data class LoginRequest(
-    var username:String? = null,
-    var password: String? = null,
+    var username:String,
+    var password: String
 )

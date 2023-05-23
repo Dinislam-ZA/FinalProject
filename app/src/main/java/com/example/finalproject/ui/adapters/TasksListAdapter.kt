@@ -13,6 +13,10 @@ import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Task
 import com.example.finalproject.databinding.TaskListItemBinding
 import com.example.finalproject.ui.MenuAdapterListener
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 
 class TasksListAdapter(private var tasksList: List<Task>, private val listener: TaskAdapterListener, val context: Context): RecyclerView.Adapter<TasksListAdapter.TaskViewHolder>() {
 
@@ -82,12 +86,25 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
         return tasksList.size
     }
 
+    fun formatTime(timeInMillis: Long): String {
+        val hours = TimeUnit.MILLISECONDS.toHours(timeInMillis)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(timeInMillis) % 60
+
+        return "$hours hours $minutes minutes"
+    }
+
+    private val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         with(holder){
             with(tasksList[position]){
                 binding.title.text = title
-                //binding.deadline.text = deadLine
-                //binding.duration.text = taskDuration
+                if(deadLine!=null) {
+                    binding.deadline.text = dateFormat.format(deadLine)
+                }
+                if(taskDuration != null) {
+                    binding.duration.text = formatTime(taskDuration!!)
+                }
                 binding.createdAt.text = createdAt
                 binding.author.text = "by $author"
                 val color = getCategoryColor(categorie)

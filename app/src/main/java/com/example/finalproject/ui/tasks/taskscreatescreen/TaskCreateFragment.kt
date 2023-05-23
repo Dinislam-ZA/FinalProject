@@ -156,7 +156,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
             .build()
 
             picker.addOnPositiveButtonClickListener {
-                execTime = it.drawingTime
+                execTime = (picker.hour*3600*1000 + picker.minute*60*1000).toLong()
                 var hourStr = "${picker.hour}"
                 var minuteStr = "${picker.minute}"
                 if(picker.hour < 10){
@@ -179,7 +179,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
                 .build()
 
             picker.addOnPositiveButtonClickListener {
-                duration = it.drawingTime
+                duration = (picker.hour*3600*1000 + picker.minute*60*1000).toLong()
                 var hourStr = "${picker.hour}"
                 var minuteStr = "${picker.minute}"
                 if(picker.hour < 10){
@@ -285,10 +285,22 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
         if(mSelectedTask != null){
             with(binding){
                 titleTV.setText(mSelectedTask.title)
-                if(mSelectedTask.deadLine != null) deadlineDateTv.text = dateFormat.format(mSelectedTask.deadLine)
-                if(mSelectedTask.executionDate != null) executionDateTv.text = dateFormat.format(mSelectedTask.executionDate)
-                if(mSelectedTask.executionTime != null) executionTimeTv.text = timeFormat.format(mSelectedTask.executionTime)
-                if(mSelectedTask.taskDuration != null) durationTv.text = timeFormat.format(mSelectedTask.taskDuration)
+                if(mSelectedTask.deadLine != null) {
+                    deadlineDateTv.text = dateFormat.format(mSelectedTask.deadLine)
+                    deadLine = mSelectedTask.deadLine
+                }
+                if(mSelectedTask.executionDate != null) {
+                    executionDateTv.text = dateFormat.format(mSelectedTask.executionDate)
+                    execDate = mSelectedTask.executionDate
+                }
+                if(mSelectedTask.executionTime != null) {
+                    executionTimeTv.text = timeFormat.format(mSelectedTask.executionTime)
+                    execTime = mSelectedTask.executionTime
+                }
+                if(mSelectedTask.taskDuration != null) {
+                    durationTv.text = timeFormat.format(mSelectedTask.taskDuration)
+                    duration = mSelectedTask.taskDuration
+                }
                 categoryId = mSelectedTask.categorie
             }
 

@@ -51,14 +51,14 @@
         app:layout_constraintTop_toBottomOf="@+id/userView" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/black"
         app:layout_constraintBottom_toTopOf="@id/friend_list_button"
-        app:layout_constraintStart_toStartOf="@id/friend_list_button"
         app:layout_constraintEnd_toEndOf="@id/friend_list_button"
 
-        />
+        app:layout_constraintStart_toStartOf="@id/friend_list_button" />
 
     <TextView
         android:id="@+id/friend_list_button"
@@ -147,6 +147,29 @@
 
         />
 
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Log out"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/userNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        android:text="Username"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

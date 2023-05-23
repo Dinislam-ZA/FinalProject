@@ -1,6 +1,5 @@
 package com.example.finalproject.ui.schedule.schedulemainscreen
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,17 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.finalproject.R
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Task
-import com.example.finalproject.databinding.FragmentCategoriesBinding
 import com.example.finalproject.databinding.FragmentScheduleMainBinding
-import com.example.finalproject.ui.adapters.NotesInTasksAdapter
 import com.example.finalproject.ui.adapters.ScheduleListAdapter
 import com.example.finalproject.ui.adapters.TaskAdapterListener
-import com.example.finalproject.ui.profile.categoriesscreen.CategoriesViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -85,9 +79,7 @@ class ScheduleMainFragment : Fragment(), TaskAdapterListener {
 
     private fun filterTasksByDate(selectedDate: Long): List<Task> {
         // Фильтрация задач по выбранной дате
-        return tasks.filter { task ->
-            // Вам нужно заменить это условие на фактическую проверку даты в вашей модели Task
-            // Например, если у вас есть поле "dueDate" в модели Task, то условие может быть таким:
+        return tasks.filter {task -> task.executionDate != null  }.filter { task ->
             dateFormat.format(task.executionDate) == dateFormat.format(selectedDate)
         }
     }

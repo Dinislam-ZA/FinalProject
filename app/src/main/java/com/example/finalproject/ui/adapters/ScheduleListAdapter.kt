@@ -61,7 +61,7 @@ class ScheduleListAdapter(private val listener: TaskAdapterListener, val context
         return Color.parseColor("#59A5FF")
     }
 
-    fun formatTime(timeInMillis: Long): String {
+    private fun formatTime(timeInMillis: Long): String {
         val hours = TimeUnit.MILLISECONDS.toHours(timeInMillis)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(timeInMillis) % 60
 
@@ -97,9 +97,14 @@ class ScheduleListAdapter(private val listener: TaskAdapterListener, val context
     override fun onBindViewHolder(holder: ScheduleTaskViewHolder, position: Int) {
         with(holder){
             with(tasksList[position]){
-                binding.taskScheduleTime.text = timeFormat.format(executionTime)
+                if (executionTime != null) {
+                    binding.taskScheduleTime.text = timeFormat.format(executionTime)
+                }
                 binding.taskScheduleTitle.text = title
-                val duration = formatTime(taskDuration!!)
+                var duration = "no duration"
+                if (taskDuration != null) {
+                    duration = formatTime(taskDuration!!)
+                }
                 binding.taskScheduleDuration.text = "duration - $duration"
                 binding.taskDividerView.setBackgroundColor(getCategoryColor(categorie))
             }
