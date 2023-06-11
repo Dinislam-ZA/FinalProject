@@ -1,16 +1,13 @@
 package com.example.finalproject.ui.profile.profilemainscreen
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.finalproject.R
 import com.example.finalproject.data.sharedpreference.SecureStorage
 import com.example.finalproject.databinding.FragmentProfileMainBinding
@@ -44,6 +41,7 @@ class ProfileMainFragment : Fragment() {
         val securityManager = SecureStorage(requireContext())
         if (securityManager.token != null){
             securityManager.username?.let { userAuthorized(it) }
+
         }
 
 
@@ -55,22 +53,38 @@ class ProfileMainFragment : Fragment() {
             val navController = requireActivity().findNavController(R.id.fragmentContainerView)
             navController.navigate(R.id.action_mainFragment_to_loginFragment2)
         }
+
+        binding.logoutButton.setOnClickListener {
+            userUnauthorized()
+        }
+
+        binding.friendListButton.setOnClickListener {
+            if (securityManager.token != null){
+                view.findNavController().navigate(R.id.action_profileMainFragment_to_friendsListFragment)
+            }
+            else{
+                val toastAuthRequest = Toast.makeText(requireContext(), "Требуется авторизация", Toast.LENGTH_SHORT)
+                toastAuthRequest.show()
+            }
+        }
     }
 
 
-    private fun bottomSheetDialogAppear(){
-        val dialogView = layoutInflater.inflate(R.layout.fragment_login, null)
-        dialog = context?.let { BottomSheetDialog(it) }
-        dialog?.setContentView(dialogView)
-        dialog?.show()
-    }
 
-    fun userAuthorized(username: String){
+
+    private fun userAuthorized(username: String){
         binding.loginButton.visibility = View.GONE
         binding.logoutButton.visibility = View.VISIBLE
         binding.userNameTV.visibility = View.VISIBLE
         binding.userNameTV.text = username
     }
 
+    private fun userUnauthorized() {
+        binding.loginButton.visibility = View.VISIBLE
+        binding.logoutButton.visibility = View.GONE
+        binding.userNameTV.visibility = View.GONE
+        val securityManager = SecureStorage(requireContext())
+        securityManager.clearAll()
+    }
 
 }

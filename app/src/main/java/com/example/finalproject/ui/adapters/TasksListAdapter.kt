@@ -102,11 +102,9 @@ class TasksListAdapter(private var tasksList: List<Task>, private val listener: 
                 if(deadLine!=null) {
                     binding.deadline.text = dateFormat.format(deadLine)
                 }
-                if(taskDuration != null) {
-                    binding.duration.text = formatTime(taskDuration!!)
-                }
                 binding.createdAt.text = createdAt
-                binding.author.text = "by $author"
+                binding.author.text = "by you"
+                binding.progressBar.progress = status
                 val color = getCategoryColor(categorie)
                 binding.cardView.backgroundTintList = ColorStateList.valueOf(color)
             }

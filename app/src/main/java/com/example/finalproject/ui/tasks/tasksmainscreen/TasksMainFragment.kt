@@ -124,6 +124,7 @@ class TasksMainFragment : Fragment(), TaskAdapterListener, SecondaryAdapterListe
 
     private fun categoriesChanges(categories: List<Category>) {
         adapter.setCategoryList(categories)
+        adapter.notifyDataSetChanged()
         categoriesList = ExtraFunctions.concatenate(listOf(noCategoryItem), categories)
         categoriesMainMenuAdapter.categoriesList = categoriesList
         categoriesMainMenuAdapter.notifyDataSetChanged()
@@ -141,7 +142,7 @@ class TasksMainFragment : Fragment(), TaskAdapterListener, SecondaryAdapterListe
 
     override fun onSecondaryListItemClick(position: Int) {
         if (position == 0){
-            binding.infoList.text = resources.getString(R.string.notes_default_info)
+            binding.infoList.text = "All tasks"
             taskCategoryFilter = null
         }
         else{

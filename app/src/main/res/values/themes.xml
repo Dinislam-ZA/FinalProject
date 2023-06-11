@@ -13,4 +13,10 @@
         <item name="android:statusBarColor">@color/grey</item>
         <item name="android:navigationBarColor"> @color/grey</item>
     </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:background">@drawable/bottom_sheet_dialog_background</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
 </resources>

@@ -81,7 +81,6 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
     private var execDate:Long? = null
     private var execTime:Long? = null
 
-    private val status: Int = 0
 
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -110,6 +109,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
         adaptersInitialize()
 
         binding.saveButton.setOnClickListener {
+            val status = sumSubTaskProgress()
             viewModel.createOrUpdateTask(isForCreate
                 ,binding.titleTV.text.toString()
                 ,deadLine
@@ -129,7 +129,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
             picker.addOnPositiveButtonClickListener {
                 deadLine = it
                 val dateString = dateFormat.format(deadLine)
-                binding.deadlineDateTv.text = dateString
+                binding.deadlineDateTv.text = "$dateString - deadline"
             }
 
             picker.show(childFragmentManager, picker.toString())
@@ -142,7 +142,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
             picker.addOnPositiveButtonClickListener {
                 execDate = it
                 val dateString = dateFormat.format(execDate)
-                binding.executionDateTv.text = dateString
+                binding.executionDateTv.text = "$dateString - execution date"
             }
 
             picker.show(childFragmentManager, picker.toString())
@@ -165,7 +165,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
                 if(picker.minute < 10){
                     minuteStr = "0" + "${picker.minute}"
                 }
-                binding.executionTimeTv.text = "$hourStr:$minuteStr"
+                binding.executionTimeTv.text = "$hourStr:$minuteStr - execution time"
             }
 
             picker.show(childFragmentManager, picker.toString())
@@ -188,7 +188,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
                 if(picker.minute < 10){
                     minuteStr = "0" + "${picker.minute}"
                 }
-                binding.durationTv.text = "$hourStr:$minuteStr"
+                binding.durationTv.text = "$hourStr:$minuteStr - duration"
             }
             picker.show(childFragmentManager, picker.toString())
         }
@@ -257,6 +257,16 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
         val subTask = subTasksList[position]
         subTask.title = text
         viewModel.addSubTaskToSelectedTask(subTask)
+    }
+
+    private fun sumSubTaskProgress():Int{
+        var progress:Int = 0
+        val subTaskNumber = subTasksList.size
+        subTasksList.map { subTask -> if(subTask.status) progress++ }
+        return if (progress!=0)
+            subTaskNumber/progress
+        else
+            0
     }
 
     override fun onSubTaskStatusChanged(isChecked: Boolean, position: Int) {
@@ -372,6 +382,7 @@ class TaskCreateFragment : Fragment(), SecondaryAdapterListener, SubTaskItemsLis
         }
         return false
     }
+
 
 }
 

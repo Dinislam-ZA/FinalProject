@@ -24,7 +24,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
             if (title.isNotBlank()&& title.isNotEmpty()){
                 Log.d("vm", categoryId.toString())
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(0 ,title, noteDes, date, "Author" ,taskId,categoryId)
+                val note = Note(0 ,title, noteDes, date, "Author" ,taskId,categorie = categoryId)
                 val id = noteRepo.insertNote(note)
                 noteLive.postValue(noteRepo.findNoteById(id))
             }
@@ -36,7 +36,7 @@ class NoteCreateViewModel(private val noteRepo: NoteRepo, private val categoryRe
             if (title.isNotBlank()&& title.isNotEmpty()){
                 Log.d("vm", categoryId.toString())
                 val date = LocalDateTime.now().toLocalDate().toString()
-                val note = Note(0 ,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,taskId ,categoryId)
+                val note = Note(id!! ,title, noteDes, noteLive.value?.createdAt ?: date, "Author" ,taskId , categorie = categoryId)
                 noteRepo.updateNote(note)
             }
         }

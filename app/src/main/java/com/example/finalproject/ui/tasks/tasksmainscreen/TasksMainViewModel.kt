@@ -1,13 +1,18 @@
 package com.example.finalproject.ui.tasks.tasksmainscreen
 
+import android.content.Context
 import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.finalproject.data.model.Category
 import com.example.finalproject.data.model.Note
 import com.example.finalproject.data.model.SubTask
 import com.example.finalproject.data.model.Task
 import com.example.finalproject.data.repositories.CategoryRepo
 import com.example.finalproject.data.repositories.TaskRepo
+import com.example.finalproject.workers.NotificationWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +20,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 
 class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRepo: CategoryRepo): ViewModel() {
 
@@ -53,7 +59,7 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
     fun createTask(title: String){
         viewModelScope.launch(Dispatchers.IO) {
             val date = LocalDateTime.now().toLocalDate().toString()
-            val task = Task(title = title, createdAt = date, id = 0)
+            val task = Task(title = title, createdAt = date, id = 0, lastUpdate = date)
             taskRepo.insertTask(task)
         }
     }
@@ -75,8 +81,10 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
                     author = author,
                     status = status,
                     executionTime = executionTime ,
-                    createdAt = date,
-                    categorie = categoryId)
+                    createdAt = selectedTask.value?.createdAt ?: date,
+                    categorie = categoryId,
+                    lastUpdate = date
+                    )
                 if(createOrUpdate){
                     taskRepo.insertTask(task)
                 }
@@ -126,6 +134,21 @@ class TasksMainViewModel (private val taskRepo: TaskRepo,private val categoryRep
                 taskRepo.removeNoteFromTask(noteId, selectedTask.value?.id!!)
             }
         }
+    }
+
+    fun setNotification(context: Context, id:Long){
+        val taskId = id.toInt()
+        val data = workDataOf("task_id" to taskId)
+        val delay = 60L
+
+        val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+            .setInputData(data)
+            .setInitialDelay(delay, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager
+            .getInstance(context)
+            .enqueue(workRequest)
     }
 
     companion object {

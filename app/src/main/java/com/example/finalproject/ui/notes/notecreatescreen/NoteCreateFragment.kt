@@ -125,6 +125,10 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
             view.findNavController().popBackStack()
         }
 
+        binding.topicName.setOnClickListener {
+            bottomSheetDialogAppear()
+        }
+
     }
 
 
@@ -135,7 +139,6 @@ class NoteCreateFragment : Fragment(), SecondaryAdapterListener {
 
 
     private fun bottomSheetDialogAppear(){
-        //val dialogView = layoutInflater.inflate(R.layout.category_bottom_sheet, null)
         val bottomSheetBinding = CategoryBottomSheetBinding.inflate(layoutInflater)
         val dialogView = bottomSheetBinding.root
         dialog = context?.let { BottomSheetDialog(it) }

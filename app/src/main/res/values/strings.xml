@@ -14,5 +14,13 @@
     <string name="password_field_hint">Enter password</string>
     <string name="login_hint">Login</string>
     <string name="registration_hint">Registration</string>
+    <string name="add_new_friend">Add new friend</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="delete_from_friends">Delete from friends</string>
+    <string name="notification_title">Task execution time</string>
+    <string name="main_notification_channel_task">application_main_channel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

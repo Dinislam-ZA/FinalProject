@@ -16,9 +16,11 @@
         app:cardElevation="0dp"
         >
         
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
 
             <TextView
@@ -27,11 +29,81 @@
                 android:layout_height="wrap_content"
                 android:text="Category name"
                 android:textStyle="bold"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textSize="24sp"
                 />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/categoryHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tap to see more"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"
+                />
+
+            <TextView
+                android:id="@+id/taskStatisticTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Task statistic:"
+                android:textSize="20sp"
+                android:visibility="gone"
+                 />
+
+            <TextView
+                android:id="@+id/taskProgressTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Tasks completion progress - 0%"
+                android:textSize="20sp"
+                android:visibility="gone"
+                 />
+
+            <TextView
+                android:id="@+id/taskActiveNumberTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Active tasks - 0"
+                android:textSize="20sp"
+                android:visibility="gone"
+                 />
+
+            <TextView
+                android:id="@+id/habitsStatisticTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Habits statistic:"
+                android:textSize="20sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/habitProgressTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Habits execution progress - 0%"
+                android:textSize="20sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/habitActiveNumberTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Active habits - 0"
+                android:textSize="20sp"
+                android:visibility="gone"
+                 />
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

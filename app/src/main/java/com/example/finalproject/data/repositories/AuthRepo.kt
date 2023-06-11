@@ -10,7 +10,7 @@ import retrofit2.Response
 
 class AuthRepo(context: Context) {
 
-    private val authService = RetrofitClient.authService
+    private val authService = RetrofitClient.apiService
 
     private val secureStorage = SecureStorage(context)
 
@@ -50,7 +50,7 @@ class AuthRepo(context: Context) {
 
     suspend fun attemptRegistration(username:String, password: String, phoneNumber:String): Response<User> {
         val userDetails = User(username, password, phoneNumber)
-        return RetrofitClient.authService.registerUser(userDetails)
+        return RetrofitClient.apiService.registerUser(userDetails)
     }
 
 }

@@ -27,7 +27,8 @@ data class Task(
     @ColumnInfo(name = "execution_date")
     var executionDate:Long? = null,
     @ColumnInfo(name = "execution_time")
-    var executionTime:Long? = null
+    var executionTime:Long? = null,
+    @ColumnInfo(name = "lastUpdate") val lastUpdate:String
 )
 
 @Entity(tableName = "subtasks_table", indices = [Index(value = ["title", "task_id"],

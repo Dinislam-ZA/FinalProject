@@ -23,7 +23,7 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModels { LoginViewModel.Factory }
     private lateinit var binding: FragmentLoginBinding
 
-    //private val toastBadRequest = Toast.makeText(requireContext(), "Не удалось выполнить запрос", Toast.LENGTH_SHORT)
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +35,10 @@ class LoginFragment : Fragment() {
                 it -> if(it == true) view?.findNavController()?.popBackStack()
         }
 
+        val toastBadRequest = Toast.makeText(requireContext(), "Не удалось выполнить запрос", Toast.LENGTH_SHORT)
         viewModel.isBad.observe(viewLifecycleOwner) {
                 it -> if(it == true) {
-                //    toastBadRequest.show()
+                    toastBadRequest.show()
                     stopLoading()
                 }
         }
@@ -52,9 +53,13 @@ class LoginFragment : Fragment() {
             loginButtonClick()
         }
 
+        binding.registerButton.setOnClickListener {
+            view.findNavController().navigate(R.id.action_loginFragment2_to_registerFragment2)
+        }
+
     }
 
-    fun loginButtonClick(){
+    private fun loginButtonClick(){
         val username = binding.usernameInput.text.toString()
         val password = binding.passwordInput.text.toString()
         val userDetails = LoginRequest(username = username, password = password)
@@ -62,11 +67,11 @@ class LoginFragment : Fragment() {
         viewModel.loginUser(userDetails)
     }
 
-    fun isLoading(){
+    private fun isLoading(){
         binding.progressBarLogin.visibility = View.VISIBLE
     }
 
-    fun stopLoading(){
+    private fun stopLoading(){
         binding.progressBarLogin.visibility = View.GONE
     }
 

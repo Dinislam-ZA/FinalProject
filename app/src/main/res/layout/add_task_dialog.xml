@@ -4,14 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="10dp"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create new task"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:gravity="center"
+            />
 
         <EditText
             android:id="@+id/task_title_add"
@@ -26,7 +33,7 @@
             android:padding="8dp"
             android:background="@drawable/edittext_background"
             android:inputType="textPersonName"
-            android:text="Title"
+            android:hint="Title"
             />
 
         <Button

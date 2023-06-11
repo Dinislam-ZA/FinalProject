@@ -13,6 +13,7 @@ import com.example.finalproject.data.model.Task
 import com.example.finalproject.databinding.FragmentScheduleMainBinding
 import com.example.finalproject.ui.adapters.ScheduleListAdapter
 import com.example.finalproject.ui.adapters.TaskAdapterListener
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,7 +59,7 @@ class ScheduleMainFragment : Fragment(), TaskAdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.monthDayText.text = dateFormat.format(currentDate.timeInMillis)
+        updateCurrentDateTextView()
 
         tasksAdapter = ScheduleListAdapter(this, requireContext())
         binding.taskList.layoutManager = LinearLayoutManager(requireContext())
@@ -70,6 +71,18 @@ class ScheduleMainFragment : Fragment(), TaskAdapterListener {
 
         binding.previousDateButton.setOnClickListener {
             previousDayAction(it)
+        }
+
+        binding.monthDayText.setOnClickListener {
+            val builder = MaterialDatePicker.Builder.datePicker()
+            val picker = builder.build()
+
+            picker.addOnPositiveButtonClickListener {
+                currentDate.timeInMillis = it
+                updateCurrentDateTextView()
+            }
+
+            picker.show(childFragmentManager, picker.toString())
         }
     }
 
@@ -87,7 +100,7 @@ class ScheduleMainFragment : Fragment(), TaskAdapterListener {
     private fun changeRCViewTasks(newTasks: List<Task>){
         tasks = newTasks
         val filteredTaskList = filterTasksByDate(currentDate.timeInMillis)
-        tasksAdapter.setTasksList(filteredTaskList)
+        tasksAdapter.setTasksList(filteredTaskList.sortedBy { it.executionTime })
     }
 
     private fun nextDayAction(view: View) {
@@ -98,6 +111,7 @@ class ScheduleMainFragment : Fragment(), TaskAdapterListener {
 
     private fun updateCurrentDateTextView() {
         binding.monthDayText.text = dateFormat.format(currentDate.timeInMillis)
+        binding.dayOfWeekTV.text = dayOfWeek(currentDate.get(Calendar.DAY_OF_WEEK))
     }
 
     private fun previousDayAction(view: View) {
@@ -114,5 +128,17 @@ class ScheduleMainFragment : Fragment(), TaskAdapterListener {
         TODO("Not yet implemented")
     }
 
+    private fun dayOfWeek(day:Int):String{
+        when(day){
+            1 -> return "Sunday"
+            2 -> return "Monday"
+            3 -> return "Tuesday"
+            4 -> return "Wednesday"
+            5 -> return "Thursday"
+            6 -> return "Friday"
+            7 -> return "Saturday"
+        }
+        return "No day"
+    }
 
 }
